@@ -4,7 +4,7 @@
 #include <limits>
 #include <float.h>
 #include <cstdlib>
-#include <boost/math/special_functions/fpclassify.hpp>
+#include <cmath>
 
 #define piValue 3.14159265359
 #define piValD2 1.570796326794
@@ -22,5 +22,5 @@
 #define SIM_MAX_DOUBLE (0.01*DBL_MAX)
 #define SIM_MAX_INT INT_MAX
 #define SIM_RAND_FLOAT (static_cast<float>(rand())/static_cast<float>(RAND_MAX))
-#define VREP_IS_NAN(x) ((boost::math::isnan)(x))
-#define VREP_IS_FINITE(x) ((boost::math::isfinite)(x))
+#define VREP_IS_NAN(x) ((std::isnan)(x))
+#define VREP_IS_FINITE(x) ((std::isfinite)(x))
