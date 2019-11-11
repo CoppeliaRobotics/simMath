@@ -14,33 +14,33 @@ public:
     C3X3Matrix(const C3Vector& xAxis,const C3Vector& yAxis,const C3Vector& zAxis);
     ~C3X3Matrix();
 
-    void buildInterpolation(const C3X3Matrix& fromThis,const C3X3Matrix& toThat,float t);
+    void buildInterpolation(const C3X3Matrix& fromThis,const C3X3Matrix& toThat,simMathReal t);
     C4Vector getQuaternion() const;
-    void setEulerAngles(float a,float b,float g);
+    void setEulerAngles(simMathReal a,simMathReal b,simMathReal g);
     void setEulerAngles(const C3Vector& v);
     C3Vector getEulerAngles() const;
-    void buildXRotation(float angle);
-    void buildYRotation(float angle);
-    void buildZRotation(float angle);
+    void buildXRotation(simMathReal angle);
+    void buildYRotation(simMathReal angle);
+    void buildZRotation(simMathReal angle);
     C3Vector getNormalVector() const;
 
-    inline void getInternalData(float d[9]) const
+    inline void getInternalData(simMathReal d[9]) const
     {
         axis[0].getInternalData(d+0);
         axis[1].getInternalData(d+3);
         axis[2].getInternalData(d+6);
     }
-    inline void setInternalData(const float d[9])
+    inline void setInternalData(const simMathReal d[9])
     {
         axis[0].setInternalData(d+0);
         axis[1].setInternalData(d+3);
         axis[2].setInternalData(d+6);
     }
-    inline float& operator() (unsigned i,unsigned j)
+    inline simMathReal& operator() (unsigned i,unsigned j)
     {
         return(axis[j](i));
     }
-    inline const float& operator() (unsigned i,unsigned j) const
+    inline const simMathReal& operator() (unsigned i,unsigned j) const
     {
         return(axis[j](i));
     }
@@ -78,7 +78,7 @@ public:
         axis[1]=yAxis;
         axis[2]=zAxis;
     }
-    inline void set(const float m[3][3])
+    inline void set(const simMathReal m[3][3])
     {
         axis[0](0)=m[0][0];
         axis[0](1)=m[1][0];
@@ -90,7 +90,7 @@ public:
         axis[2](1)=m[1][2];
         axis[2](2)=m[2][2];
     }
-    inline void copyTo(float m[3][3]) const
+    inline void copyTo(simMathReal m[3][3]) const
     {
         m[0][0]=axis[0](0);
         m[1][0]=axis[0](1);
@@ -102,7 +102,7 @@ public:
         m[1][2]=axis[2](1);
         m[2][2]=axis[2](2);
     }
-    inline void copyToInterface(float* m) const
+    inline void copyToInterface(simMathReal* m) const
     { // Temporary routine. Remove later!
         for (int i=0;i<3;i++)
         {
@@ -111,7 +111,7 @@ public:
             m[3*i+2]=axis[2](i);
         }
     }
-    inline void copyFromInterface(const float* m)
+    inline void copyFromInterface(const simMathReal* m)
     { // Temporary routine. Remove later!
         for (int i=0;i<3;i++)
         {
@@ -185,7 +185,7 @@ public:
         retM(2,2)=axis[2](2)-m(2,2);
         return(retM);   
     }
-    inline C3X3Matrix operator* (float f) const
+    inline C3X3Matrix operator* (simMathReal f) const
     {
         C3X3Matrix retM;
         retM(0,0)=axis[0](0)*f;
@@ -199,7 +199,7 @@ public:
         retM(2,2)=axis[2](2)*f;
         return(retM);   
     }
-    inline C3X3Matrix operator/ (float f) const
+    inline C3X3Matrix operator/ (simMathReal f) const
     {
         C3X3Matrix retM;
         retM(0,0)=axis[0](0)/f;
@@ -251,7 +251,7 @@ public:
         axis[1](2)-=m(2,1);
         axis[2](2)-=m(2,2);
     }
-    inline void operator*= (float f)
+    inline void operator*= (simMathReal f)
     {
         axis[0](0)*=f;
         axis[1](0)*=f;
@@ -263,7 +263,7 @@ public:
         axis[1](2)*=f;
         axis[2](2)*=f;
     }
-    inline void operator/= (float f)
+    inline void operator/= (simMathReal f)
     {
         axis[0](0)/=f;
         axis[1](0)/=f;

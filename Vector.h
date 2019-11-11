@@ -18,21 +18,21 @@ public:
     CVector(const CVector& v);
     ~CVector();
 
-    CVector operator* (float d) const;
-    CVector operator/ (float d) const;
+    CVector operator* (simMathReal d) const;
+    CVector operator/ (simMathReal d) const;
     CVector operator+ (const CVector& v) const;
     CVector operator- (const CVector& v) const;
 
-    void operator*= (float d);
-    void operator/= (float d);
+    void operator*= (simMathReal d);
+    void operator/= (simMathReal d);
     void operator+= (const CVector& v);
     void operator-= (const CVector& v);
     
-    float operator* (const C3Vector& v) const;
-    float operator* (const C4Vector& v) const;
-    float operator* (const C6Vector& v) const;
-    float operator* (const C7Vector& v) const;
-    float operator* (const CVector& v) const;
+    simMathReal operator* (const C3Vector& v) const;
+    simMathReal operator* (const C4Vector& v) const;
+    simMathReal operator* (const C6Vector& v) const;
+    simMathReal operator* (const C7Vector& v) const;
+    simMathReal operator* (const CVector& v) const;
 
     CVector& operator= (const C3Vector& v);
     CVector& operator= (const C4Vector& v);
@@ -40,18 +40,18 @@ public:
     CVector& operator= (const C7Vector& v);
     CVector& operator= (const CVector& v);
 
-inline float& operator() (int i)
+inline simMathReal& operator() (int i)
 {
     return(data[i]);
 }
 
-inline const float& operator() (int i) const
+inline const simMathReal& operator() (int i) const
 {
     return(data[i]);
 }
 
     int elements;
 private:
-    float* data;
+    simMathReal* data;
 };
 

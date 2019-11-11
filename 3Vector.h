@@ -11,68 +11,68 @@ class C3Vector
 public:
 
     C3Vector();
-    C3Vector(float v0,float v1,float v2);
-    C3Vector(const float v[3]);
+    C3Vector(simMathReal v0,simMathReal v1,simMathReal v2);
+    C3Vector(const simMathReal v[3]);
     C3Vector(const C3Vector& v);
     ~C3Vector();
 
-    void buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,float t);
-    float getAngle(const C3Vector& v) const;
+    void buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,simMathReal t);
+    simMathReal getAngle(const C3Vector& v) const;
     C3X3Matrix getProductWithStar() const;
 
     void operator*= (const C4X4Matrix& m);
     void operator*= (const C3X3Matrix& m);
     void operator*= (const C7Vector& transf);
 
-    inline void getInternalData(float d[3]) const
+    inline void getInternalData(simMathReal d[3]) const
     {
         d[0]=data[0];
         d[1]=data[1];
         d[2]=data[2];
     }
-    inline void setInternalData(const float d[3])
+    inline void setInternalData(const simMathReal d[3])
     {
         data[0]=d[0];
         data[1]=d[1];
         data[2]=d[2];
     }
-    inline float* ptr()
+    inline simMathReal* ptr()
     {
         return(data);
     }
-    inline bool isColinear(const C3Vector& v,float precision) const
+    inline bool isColinear(const C3Vector& v,simMathReal precision) const
     {
-        float scalProdSq=(*this)*v;
+        simMathReal scalProdSq=(*this)*v;
         scalProdSq=scalProdSq*scalProdSq;
-        float l1=(*this)*(*this);
-        float l2=v*v;
+        simMathReal l1=(*this)*(*this);
+        simMathReal l2=v*v;
         return((scalProdSq/(l1*l2))>=precision);
     }
-    inline float& operator() (unsigned i)
+    inline simMathReal& operator() (unsigned i)
     {
         return(data[i]);
     }
-    inline const float& operator() (unsigned i) const
+    inline const simMathReal& operator() (unsigned i) const
     {
         return(data[i]);
     }
-    inline float getLength() const
+    inline simMathReal getLength() const
     {
         return(sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]));
     }
-    inline void copyTo(float v[3]) const
+    inline void copyTo(simMathReal v[3]) const
     {
         v[0]=data[0];
         v[1]=data[1];
         v[2]=data[2];
     }
-    inline void set(const float v[3])
+    inline void set(const simMathReal v[3])
     {
         data[0]=v[0];
         data[1]=v[1];
         data[2]=v[2];
     }
-    inline void get(float v[3]) const
+    inline void get(simMathReal v[3]) const
     {
         v[0]=data[0];
         v[1]=data[1];
@@ -81,7 +81,7 @@ public:
     inline C3Vector getNormalized() const
     {
         C3Vector retV;
-        float l=sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
+        simMathReal l=sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
         if (l!=0.0f)
         {
             retV(0)=data[0]/l;
@@ -111,9 +111,9 @@ public:
     }
     inline bool isValid() const
     {
-        return((VREP_IS_FINITE(data[0])!=0)&&(VREP_IS_FINITE(data[1])!=0)&&(VREP_IS_FINITE(data[2])!=0)&&(VREP_IS_NAN(data[0])==0)&&(VREP_IS_NAN(data[1])==0)&&(VREP_IS_NAN(data[2])==0));
+        return((SIM_IS_FINITE(data[0])!=0)&&(SIM_IS_FINITE(data[1])!=0)&&(SIM_IS_FINITE(data[2])!=0)&&(SIM_IS_NAN(data[0])==0)&&(SIM_IS_NAN(data[1])==0)&&(SIM_IS_NAN(data[2])==0));
     }
-    inline void set(float v0,float v1,float v2)
+    inline void set(simMathReal v0,simMathReal v1,simMathReal v2)
     {
         data[0]=v0;
         data[1]=v1;
@@ -121,7 +121,7 @@ public:
     }
     inline void normalize()
     {
-        float l=sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
+        simMathReal l=sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
         if (l!=0.0f)
         {
             data[0]=data[0]/l;
@@ -135,7 +135,7 @@ public:
         data[1]=0.0f;
         data[2]=0.0f;
     }
-    inline C3Vector operator/ (float d) const
+    inline C3Vector operator/ (simMathReal d) const
     {
         C3Vector retV;
         retV(0)=data[0]/d;
@@ -143,13 +143,13 @@ public:
         retV(2)=data[2]/d;
         return(retV);
     }
-    inline void operator/= (float d)
+    inline void operator/= (simMathReal d)
     {
         data[0]/=d;
         data[1]/=d;
         data[2]/=d;
     }
-    inline C3Vector operator* (float d) const
+    inline C3Vector operator* (simMathReal d) const
     {
         C3Vector retV;
         retV(0)=data[0]*d;
@@ -157,7 +157,7 @@ public:
         retV(2)=data[2]*d;
         return(retV);
     }
-    inline void operator*= (float d)
+    inline void operator*= (simMathReal d)
     {
         data[0]*=d;
         data[1]*=d;
@@ -220,7 +220,7 @@ public:
         data[1]=retV(1);
         data[2]=retV(2);
     }
-    inline float operator* (const C3Vector& v) const
+    inline simMathReal operator* (const C3Vector& v) const
     { // Scalar product
         return(data[0]*v.data[0]+data[1]*v.data[1]+data[2]*v.data[2]);
     }
@@ -231,7 +231,7 @@ public:
     static const C3Vector unitZVector;
     static const C3Vector zeroVector;
 
-    float data[3];
+    simMathReal data[3];
 };
 
 

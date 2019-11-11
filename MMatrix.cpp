@@ -7,14 +7,14 @@ CMatrix::CMatrix()
 
 CMatrix::CMatrix(int nRows,int nCols)
 {
-    data=new float[nRows*nCols];
+    data=new simMathReal[nRows*nCols];
     rows=nRows;
     cols=nCols;
 }
 
 CMatrix::CMatrix(const C3X3Matrix& m)
 {
-    data=new float[9];
+    data=new simMathReal[9];
     rows=3;
     cols=3;
     (*this)=m;
@@ -22,7 +22,7 @@ CMatrix::CMatrix(const C3X3Matrix& m)
 
 CMatrix::CMatrix(const C4X4Matrix& m)
 {
-    data=new float[16];
+    data=new simMathReal[16];
     rows=4;
     cols=4;
     (*this)=m;
@@ -30,7 +30,7 @@ CMatrix::CMatrix(const C4X4Matrix& m)
 
 CMatrix::CMatrix(const C6X6Matrix& m)
 {
-    data=new float[36];
+    data=new simMathReal[36];
     rows=6;
     cols=6;
     (*this)=m;
@@ -38,7 +38,7 @@ CMatrix::CMatrix(const C6X6Matrix& m)
 
 CMatrix::CMatrix(const CMatrix& m)
 {
-    data=new float[m.rows*m.cols];
+    data=new simMathReal[m.rows*m.cols];
     rows=m.rows;
     cols=m.cols;
     (*this)=m;
@@ -148,7 +148,7 @@ CMatrix CMatrix::operator- (const CMatrix& m) const
     return(retM);
 }
 
-CMatrix CMatrix::operator* (float d) const
+CMatrix CMatrix::operator* (simMathReal d) const
 {
     CMatrix retM(rows,cols);
     for (int i=0;i<(rows*cols);i++)
@@ -156,7 +156,7 @@ CMatrix CMatrix::operator* (float d) const
     return(retM);
 }
 
-CMatrix CMatrix::operator/ (float d) const
+CMatrix CMatrix::operator/ (simMathReal d) const
 {
     CMatrix retM(rows,cols);
     for (int i=0;i<(rows*cols);i++)
@@ -181,13 +181,13 @@ void CMatrix::operator-= (const CMatrix& m)
         data[i]-=m.data[i];
 }
 
-void CMatrix::operator*= (float d)
+void CMatrix::operator*= (simMathReal d)
 {
     for (int i=0;i<(rows*cols);i++)
         data[i]*=d;
 }
 
-void CMatrix::operator/= (float d)
+void CMatrix::operator/= (simMathReal d)
 {
     for (int i=0;i<(rows*cols);i++)
         data[i]/=d;
@@ -269,7 +269,7 @@ bool CMatrix::inverse()
     int n=rows;
     int irow=0;
     int i,j,k,l,ll;
-    float big,dum,pivinv;
+    simMathReal big,dum,pivinv;
     int* indxc=new int[n+1];
     int* indxr=new int[n+1];
     int* ipiv=new int[n+1];
@@ -289,7 +289,7 @@ bool CMatrix::inverse()
                     {
                         if (fabs((*this)(j-1,k-1)) >= big)
                         {
-                            big=(float)fabs((*this)(j-1,k-1));
+                            big=(simMathReal)fabs((*this)(j-1,k-1));
                             irow=j;
                             icol=k;
                         }
@@ -317,7 +317,7 @@ bool CMatrix::inverse()
         {
             for (l=1;l<=n;l++)
             {
-                float tmp=(*this)(irow-1,l-1);
+                simMathReal tmp=(*this)(irow-1,l-1);
                 (*this)(irow-1,l-1)=(*this)(icol-1,l-1);
                 (*this)(icol-1,l-1)=tmp;
             }
@@ -353,7 +353,7 @@ bool CMatrix::inverse()
         {
             for (k=1;k<=n;k++)
             {
-                float tmp=(*this)(k-1,indxr[l]-1);
+                simMathReal tmp=(*this)(k-1,indxr[l]-1);
                 (*this)(k-1,indxr[l]-1)=(*this)(k-1,indxc[l]-1);
                 (*this)(k-1,indxc[l]-1)=tmp;
             }

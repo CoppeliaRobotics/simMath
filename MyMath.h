@@ -19,14 +19,15 @@ public:
     CMath();
     virtual ~CMath();
 
-    static void limitValue(float minValue,float maxValue,float &value);
+    static void limitValue(simMathReal minValue,simMathReal maxValue,simMathReal &value);
     static void limitValue(int minValue,int maxValue,int &value);
 
 
-    static float robustAsin(float v);
-    static float robustAcos(float v);
-    static float robustFmod(float v,float w);
+    static simMathReal robustAsin(simMathReal v);
+    static simMathReal robustAcos(simMathReal v);
+    static simMathReal robustFmod(simMathReal v,simMathReal w);
     static double robustmod(double v,double w);
     static bool isFloatNumberOk(float v);
     static bool isDoubleNumberOk(double v);
+    static bool isRealNumberOk(simMathReal v);
 };

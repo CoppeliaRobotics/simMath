@@ -15,35 +15,35 @@ public:
     void invert();
     void clear();
     void setIdentity();
-    void buildZRotation(float angle);
-    void buildTranslation(float x, float y, float z);
+    void buildZRotation(simMathReal angle);
+    void buildTranslation(simMathReal x, simMathReal y, simMathReal z);
     C3Vector getEulerAngles() const;
 
     C4X4FullMatrix operator* (const C4X4FullMatrix& m) const;
-    C4X4FullMatrix operator* (float d) const;
-    C4X4FullMatrix operator/ (float d) const;
+    C4X4FullMatrix operator* (simMathReal d) const;
+    C4X4FullMatrix operator/ (simMathReal d) const;
     C4X4FullMatrix operator+ (const C4X4FullMatrix& m) const;
     C4X4FullMatrix operator- (const C4X4FullMatrix& m) const;
     
     void operator*= (const C4X4FullMatrix& m);
     void operator+= (const C4X4FullMatrix& m);
     void operator-= (const C4X4FullMatrix& m);
-    void operator*= (float d);
-    void operator/= (float d);
+    void operator*= (simMathReal d);
+    void operator/= (simMathReal d);
 
     C4X4FullMatrix& operator= (const C4X4Matrix& m);
     C4X4FullMatrix& operator= (const C4X4FullMatrix& m);
 
-    inline float& operator() (int row,int col)
+    inline simMathReal& operator() (int row,int col)
     {
         return(data[row][col]);
     }
-    inline const float& operator() (int row,int col) const
+    inline const simMathReal& operator() (int row,int col) const
     {
         return(data[row][col]);
     }
         
 private:
-    float data[4][4];
+    simMathReal data[4][4];
 };
 

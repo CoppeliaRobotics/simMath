@@ -28,7 +28,7 @@ C4X4Matrix::C4X4Matrix(const CMatrix& m)
     (*this)=m;
 }
 
-C4X4Matrix::C4X4Matrix(const float m[4][4])
+C4X4Matrix::C4X4Matrix(const simMathReal m[4][4])
 {
     for (int i=0;i<3;i++)
     {
@@ -100,14 +100,14 @@ C7Vector C4X4Matrix::getTransformation() const
 }
 
 
-void C4X4Matrix::buildInterpolation(const C4X4Matrix& fromThis,const C4X4Matrix& toThat,float t)
+void C4X4Matrix::buildInterpolation(const C4X4Matrix& fromThis,const C4X4Matrix& toThat,simMathReal t)
 {   // Builds the interpolation (based on t) from 'fromThis' to 'toThat'
     C7Vector out;
     out.buildInterpolation(fromThis.getTransformation(),toThat.getTransformation(),t);
     (*this)=out;
 }
 
-void C4X4Matrix::rotateAroundX(float angle)
+void C4X4Matrix::rotateAroundX(simMathReal angle)
 {
     C4X4Matrix rot;
     rot.setIdentity();
@@ -115,7 +115,7 @@ void C4X4Matrix::rotateAroundX(float angle)
     (*this)=rot*(*this);
 }
 
-void C4X4Matrix::rotateAroundY(float angle)
+void C4X4Matrix::rotateAroundY(simMathReal angle)
 {
     C4X4Matrix rot;
     rot.setIdentity();
@@ -123,7 +123,7 @@ void C4X4Matrix::rotateAroundY(float angle)
     (*this)=rot*(*this);
 }
 
-void C4X4Matrix::rotateAroundZ(float angle)
+void C4X4Matrix::rotateAroundZ(simMathReal angle)
 {
     C4X4Matrix rot;
     rot.setIdentity();
@@ -131,25 +131,25 @@ void C4X4Matrix::rotateAroundZ(float angle)
     (*this)=rot*(*this);
 }
 
-void C4X4Matrix::buildXRotation(float angle)
+void C4X4Matrix::buildXRotation(simMathReal angle)
 {
     setIdentity();
     M.buildXRotation(angle);
 }
 
-void C4X4Matrix::buildYRotation(float angle)
+void C4X4Matrix::buildYRotation(simMathReal angle)
 {
     setIdentity();
     M.buildYRotation(angle);
 }
 
-void C4X4Matrix::buildZRotation(float angle)
+void C4X4Matrix::buildZRotation(simMathReal angle)
 {
     setIdentity();
     M.buildZRotation(angle);
 }
 
-void C4X4Matrix::buildTranslation(float x,float y,float z)
+void C4X4Matrix::buildTranslation(simMathReal x,simMathReal y,simMathReal z)
 {
     setIdentity();
     X(0)=x;
@@ -157,7 +157,7 @@ void C4X4Matrix::buildTranslation(float x,float y,float z)
     X(2)=z;
 }
 
-void C4X4Matrix::translate(float x,float y,float z)
+void C4X4Matrix::translate(simMathReal x,simMathReal y,simMathReal z)
 {
     X(0)+=x;
     X(1)+=y;

@@ -26,8 +26,8 @@ public:
     CMatrix operator* (const C4X4Matrix& m) const;
     CMatrix operator* (const C6X6Matrix& m) const;
     CMatrix operator* (const CMatrix& m) const;
-    CMatrix operator* (float d) const;
-    CMatrix operator/ (float d) const;
+    CMatrix operator* (simMathReal d) const;
+    CMatrix operator/ (simMathReal d) const;
     CVector operator* (const CVector& v) const;
     CMatrix operator+ (const CMatrix& m) const;
     CMatrix operator- (const CMatrix& m) const;
@@ -35,37 +35,37 @@ public:
     void operator*= (const CMatrix& m);
     void operator+= (const CMatrix& m);
     void operator-= (const CMatrix& m);
-    void operator*= (float d);
-    void operator/= (float d);
+    void operator*= (simMathReal d);
+    void operator/= (simMathReal d);
 
     CMatrix& operator= (const C3X3Matrix& m);
     CMatrix& operator= (const C4X4Matrix& m);
     CMatrix& operator= (const C6X6Matrix& m);
     CMatrix& operator= (const CMatrix& m);
 
-inline float& operator() (int row,int col)
+inline simMathReal& operator() (int row,int col)
 {
     return(data[row*cols+col]);
 }
 
-inline float getAt(int row,int col) const
+inline simMathReal getAt(int row,int col) const
 {
     return(data[row*cols+col]);
 }
 
-inline void setAt(int row,int col,float value)
+inline void setAt(int row,int col,simMathReal value)
 {
     data[row*cols+col]=value;
 }
  
-inline const float& operator() (int row,int col) const
+inline const simMathReal& operator() (int row,int col) const
 {
     return(data[row*cols+col]);
 }
 
 
     int rows,cols;
-    float* data;
+    simMathReal* data;
 };
 
 

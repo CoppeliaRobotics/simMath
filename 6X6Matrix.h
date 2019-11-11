@@ -27,25 +27,25 @@ public:
     C6Vector operator* (const C6Vector& v) const;
     C6X6Matrix& operator= (const C6X6Matrix& m);
 
-    inline void getInternalData(float d[36]) const
+    inline void getInternalData(simMathReal d[36]) const
     {
         M[0][0].getInternalData(d+0);
         M[0][1].getInternalData(d+9);
         M[1][0].getInternalData(d+18);
         M[1][1].getInternalData(d+27);
     }
-    inline void setInternalData(const float d[36])
+    inline void setInternalData(const simMathReal d[36])
     {
         M[0][0].setInternalData(d+0);
         M[0][1].setInternalData(d+9);
         M[1][0].setInternalData(d+18);
         M[1][1].setInternalData(d+27);
     }
-    inline float& operator() (unsigned i,unsigned j)
+    inline simMathReal& operator() (unsigned i,unsigned j)
     {
         return(M[i/3][j/3](i%3,j%3));
     }
-    inline const float& operator() (unsigned i,unsigned j) const
+    inline const simMathReal& operator() (unsigned i,unsigned j) const
     {
         return(M[i/3][j/3](i%3,j%3));
     }

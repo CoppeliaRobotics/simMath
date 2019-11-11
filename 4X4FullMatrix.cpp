@@ -129,7 +129,7 @@ C4X4FullMatrix C4X4FullMatrix::operator- (const C4X4FullMatrix& m) const
     return(retM);
 }
 
-C4X4FullMatrix C4X4FullMatrix::operator* (float d) const
+C4X4FullMatrix C4X4FullMatrix::operator* (simMathReal d) const
 {
     C4X4FullMatrix retM;
     retM(0,0)=data[0][0]*d;
@@ -151,7 +151,7 @@ C4X4FullMatrix C4X4FullMatrix::operator* (float d) const
     return(retM);
 }
 
-C4X4FullMatrix C4X4FullMatrix::operator/ (float d) const
+C4X4FullMatrix C4X4FullMatrix::operator/ (simMathReal d) const
 {
     C4X4FullMatrix retM;
     retM(0,0)=data[0][0]/d;
@@ -218,7 +218,7 @@ void C4X4FullMatrix::operator-= (const C4X4FullMatrix& m)
     data[3][3]-=m(3,3);
 }
 
-void C4X4FullMatrix::operator*= (float d)
+void C4X4FullMatrix::operator*= (simMathReal d)
 {
     data[0][0]*=d;
     data[1][0]*=d;
@@ -238,7 +238,7 @@ void C4X4FullMatrix::operator*= (float d)
     data[3][3]*=d;
 }
 
-void C4X4FullMatrix::operator/= (float d)
+void C4X4FullMatrix::operator/= (simMathReal d)
 {
     data[0][0]/=d;
     data[1][0]/=d;
@@ -331,10 +331,10 @@ void C4X4FullMatrix::invert()
     (*this)=n;
 }
 
-void C4X4FullMatrix::buildZRotation(float angle)
+void C4X4FullMatrix::buildZRotation(simMathReal angle)
 {
-    float c=(float)cos(angle);
-    float s=(float)sin(angle);
+    simMathReal c=(simMathReal)cos(angle);
+    simMathReal s=(simMathReal)sin(angle);
     data[0][0]=c;
     data[0][1]=-s;
     data[0][2]=0.0f;
@@ -353,7 +353,7 @@ void C4X4FullMatrix::buildZRotation(float angle)
     data[3][3]=1.0f;
 }
 
-void C4X4FullMatrix::buildTranslation(float x, float y, float z)
+void C4X4FullMatrix::buildTranslation(simMathReal x, simMathReal y, simMathReal z)
 {
     data[0][0]=1.0f;
     data[0][1]=0.0f;
@@ -376,7 +376,7 @@ void C4X4FullMatrix::buildTranslation(float x, float y, float z)
 C3Vector C4X4FullMatrix::getEulerAngles() const
 { // Angles are in radians!! // THERE IS ANOTHER SUCH ROUTINE IN C4X4MATRIX
     C3Vector retV;
-    float m02=data[0][2];
+    simMathReal m02=data[0][2];
     if (m02>1.0f)
         m02=1.0f;   // Just in case
     if (m02<-1.0f)
@@ -387,13 +387,13 @@ C3Vector C4X4FullMatrix::getEulerAngles() const
         m02=-m02;
     if (m02<0.999995f)
     {   // No gimbal lock
-        retV(0)=(float)atan2(-data[1][2],data[2][2]);
-        retV(2)=(float)atan2(-data[0][1],data[0][0]);
+        retV(0)=(simMathReal)atan2(-data[1][2],data[2][2]);
+        retV(2)=(simMathReal)atan2(-data[0][1],data[0][0]);
     }
     else
     {   // Gimbal lock has occured
         retV(0)=0.0f;
-        retV(2)=(float)atan2(data[1][0],data[1][1]);
+        retV(2)=(simMathReal)atan2(data[1][0],data[1][1]);
     }
     return(retV);
 }

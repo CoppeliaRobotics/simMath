@@ -16,34 +16,34 @@ public:
     C4X4Matrix();
     C4X4Matrix(const C4X4Matrix& m);
     C4X4Matrix(const CMatrix& m);
-    C4X4Matrix(const float m[4][4]);
+    C4X4Matrix(const simMathReal m[4][4]);
     C4X4Matrix(const C3X3Matrix& m,const C3Vector& x);
     C4X4Matrix(const C3Vector& x,const C3Vector& y,const C3Vector& z,const C3Vector& pos);
     C4X4Matrix(const C7Vector& transf);
     ~C4X4Matrix();
 
     void setIdentity();
-    void buildInterpolation(const C4X4Matrix& fromThis,const C4X4Matrix& toThat,float t);
+    void buildInterpolation(const C4X4Matrix& fromThis,const C4X4Matrix& toThat,simMathReal t);
     C7Vector getTransformation() const;
-    void buildXRotation(float angle);
-    void buildYRotation(float angle);
-    void buildZRotation(float angle);
-    void buildTranslation(float x,float y,float z);
-    void rotateAroundX(float angle);
-    void rotateAroundY(float angle);
-    void rotateAroundZ(float angle);
-    void translate(float x,float y,float z);
+    void buildXRotation(simMathReal angle);
+    void buildYRotation(simMathReal angle);
+    void buildZRotation(simMathReal angle);
+    void buildTranslation(simMathReal x,simMathReal y,simMathReal z);
+    void rotateAroundX(simMathReal angle);
+    void rotateAroundY(simMathReal angle);
+    void rotateAroundZ(simMathReal angle);
+    void translate(simMathReal x,simMathReal y,simMathReal z);
 
     C4X4Matrix operator* (const CMatrix& m) const;
     C4X4Matrix& operator= (const CMatrix& m);
     C4X4Matrix& operator= (const C4X4FullMatrix& m);
 
-    inline void getInternalData(float d[12]) const
+    inline void getInternalData(simMathReal d[12]) const
     { // temporary routine, remove later
         X.getInternalData(d+0);
         M.getInternalData(d+3);
     }
-    inline void setInternalData(const float d[12])
+    inline void setInternalData(const simMathReal d[12])
     {
         X.setInternalData(d+0);
         M.setInternalData(d+3);
@@ -51,7 +51,7 @@ public:
     inline void inverse()
     {
         // Speed optimized version:
-        float tmp=M.axis[0](1);
+        simMathReal tmp=M.axis[0](1);
         M.axis[0](1)=M.axis[1](0);
         M.axis[1](0)=tmp;;
         tmp=M.axis[0](2);
@@ -60,14 +60,14 @@ public:
         tmp=M.axis[1](2);
         M.axis[1](2)=M.axis[2](1);
         M.axis[2](1)=tmp;;
-        float v[3]={-X(0),-X(1),-X(2)};
+        simMathReal v[3]={-X(0),-X(1),-X(2)};
         X(0)=M.axis[0](0)*v[0]+M.axis[1](0)*v[1]+M.axis[2](0)*v[2];
         X(1)=M.axis[0](1)*v[0]+M.axis[1](1)*v[1]+M.axis[2](1)*v[2];
         X(2)=M.axis[0](2)*v[0]+M.axis[1](2)*v[1]+M.axis[2](2)*v[2];
         // Normal version:
         //  (*this)=getInverse();
     }
-    inline void copyTo(float m[4][4]) const
+    inline void copyTo(simMathReal m[4][4]) const
     {
         for (int i=0;i<3;i++)
         {
@@ -80,7 +80,7 @@ public:
         m[3][2]=0.0f;
         m[3][3]=1.0f;
     }
-    inline void set(float m[4][4])
+    inline void set(simMathReal m[4][4])
     {
         for (int i=0;i<3;i++)
         {
@@ -89,7 +89,7 @@ public:
             X(i)=m[i][3];
         }
     }
-    inline void copyToInterface(float* m) const
+    inline void copyToInterface(simMathReal* m) const
     { // Temporary routine. Remove later!
         for (int i=0;i<3;i++)
         {
@@ -99,7 +99,7 @@ public:
             m[4*i+3]=X(i);
         }
     }
-    inline void copyFromInterface(const float* m)
+    inline void copyFromInterface(const simMathReal* m)
     { // Temporary routine. Remove later!
         for (int i=0;i<3;i++)
         {

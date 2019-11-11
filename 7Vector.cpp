@@ -28,7 +28,7 @@ C7Vector::C7Vector(const C4Vector& q,const C3Vector& x)
     X=x;
 }
 
-C7Vector::C7Vector(const float m[4][4])
+C7Vector::C7Vector(const simMathReal m[4][4])
 {
     set(m);
 }
@@ -38,7 +38,7 @@ C7Vector::C7Vector(const C4X4Matrix& m)
     set(m);
 }
 
-C7Vector::C7Vector(float angle,const C3Vector& pos,const C3Vector& dir)
+C7Vector::C7Vector(simMathReal angle,const C3Vector& pos,const C3Vector& dir)
 { // Builds a rotation around dir at position pos of angle angle (in radians)
     C7Vector shift1;
     shift1.setIdentity();
@@ -60,7 +60,7 @@ C7Vector::~C7Vector()
 
 }
 
-void C7Vector::set(float m[4][4])
+void C7Vector::set(simMathReal m[4][4])
 {
     C4X4Matrix tr(m);
     (*this)=tr.getTransformation();
@@ -86,7 +86,7 @@ C4X4Matrix C7Vector::getMatrix() const
 {
     return(C4X4Matrix(Q.getMatrix(),X));
 }
-void C7Vector::copyTo(float m[4][4]) const
+void C7Vector::copyTo(simMathReal m[4][4]) const
 { // Temporary routine. Remove later!
     C4X4Matrix tmp(getMatrix());
     for (int i=0;i<3;i++)
@@ -147,7 +147,7 @@ C7Vector C7Vector::getInverse() const
     return(retV);
 }
 
-void C7Vector::buildInterpolation(const C7Vector& fromThis,const C7Vector& toThat,float t)
+void C7Vector::buildInterpolation(const C7Vector& fromThis,const C7Vector& toThat,simMathReal t)
 {   // Builds the interpolation (based on t) from 'fromThis' to 'toThat'
     Q.buildInterpolation(fromThis.Q,toThat.Q,t);
     X.buildInterpolation(fromThis.X,toThat.X,t);

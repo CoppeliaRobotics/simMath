@@ -5,7 +5,7 @@ C6Vector::C6Vector()
 {
 }
 
-C6Vector::C6Vector(float v0,float v1,float v2,float v3,float v4,float v5)
+C6Vector::C6Vector(simMathReal v0,simMathReal v1,simMathReal v2,simMathReal v3,simMathReal v4,simMathReal v5)
 {
     V[0](0)=v0;
     V[0](1)=v1;
@@ -15,7 +15,7 @@ C6Vector::C6Vector(float v0,float v1,float v2,float v3,float v4,float v5)
     V[1](2)=v5;
 }
 
-C6Vector::C6Vector(const float v[6])
+C6Vector::C6Vector(const simMathReal v[6])
 {
     V[0](0)=v[0];
     V[0](1)=v[1];
@@ -48,7 +48,7 @@ void C6Vector::clear()
     V[1].clear();
 }
 
-C6Vector C6Vector::operator* (float d) const
+C6Vector C6Vector::operator* (simMathReal d) const
 {
     C6Vector retV;
     retV.V[0]=V[0]*d;
@@ -56,7 +56,7 @@ C6Vector C6Vector::operator* (float d) const
     return(retV);
 }
 
-C6Vector C6Vector::operator/ (float d) const
+C6Vector C6Vector::operator/ (simMathReal d) const
 {
     C6Vector retV;
     retV.V[0]=V[0]/d;
@@ -84,7 +84,7 @@ C6Vector C6Vector::operator- (const C6Vector& v) const
     retV.V[1]=V[1]-v.V[1];
     return(retV);
 }
-float C6Vector::operator* (const C6Vector& v) const
+simMathReal C6Vector::operator* (const C6Vector& v) const
 { // Scalar product of spatial vectors:
     return(V[0](0)*v.V[1](0)+V[0](1)*v.V[1](1)+V[0](2)*v.V[1](2)+V[1](0)*v.V[0](0)+V[1](1)*v.V[0](1)+V[1](2)*v.V[0](2));
 }
@@ -99,13 +99,13 @@ C6X6Matrix C6Vector::getSpatialCross() const
     return(retM);
 }
 
-void C6Vector::operator*= (float d)
+void C6Vector::operator*= (simMathReal d)
 {
     V[0]*=d;
     V[1]*=d;
 }
 
-void C6Vector::operator/= (float d)
+void C6Vector::operator/= (simMathReal d)
 {
     V[0]/=d;
     V[1]/=d;

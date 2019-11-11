@@ -8,14 +8,14 @@ C3Vector::C3Vector()
 {
 }
 
-C3Vector::C3Vector(float v0,float v1,float v2)
+C3Vector::C3Vector(simMathReal v0,simMathReal v1,simMathReal v2)
 {
     data[0]=v0;
     data[1]=v1;
     data[2]=v2;
 }
 
-C3Vector::C3Vector(const float v[3])
+C3Vector::C3Vector(const simMathReal v[3])
 {
     data[0]=v[0];
     data[1]=v[1];
@@ -31,7 +31,7 @@ C3Vector::~C3Vector()
 {
 }
 
-float C3Vector::getAngle(const C3Vector& v) const
+simMathReal C3Vector::getAngle(const C3Vector& v) const
 { // Return value is in radian!!
     C3Vector a(getNormalized());
     C3Vector b(v.getNormalized());
@@ -57,9 +57,9 @@ C3X3Matrix C3Vector::getProductWithStar() const
 void C3Vector::operator*= (const C4X4Matrix& m)
 {
 //  (*this)=m*(*this);
-    float x=data[0];
-    float y=data[1];
-    float z=data[2];
+    simMathReal x=data[0];
+    simMathReal y=data[1];
+    simMathReal z=data[2];
     data[0]=m.M.axis[0].data[0]*x+m.M.axis[1].data[0]*y+m.M.axis[2].data[0]*z+m.X.data[0];
     data[1]=m.M.axis[0].data[1]*x+m.M.axis[1].data[1]*y+m.M.axis[2].data[1]*z+m.X.data[1];
     data[2]=m.M.axis[0].data[2]*x+m.M.axis[1].data[2]*y+m.M.axis[2].data[2]*z+m.X.data[2];
@@ -67,9 +67,9 @@ void C3Vector::operator*= (const C4X4Matrix& m)
 void C3Vector::operator*= (const C3X3Matrix& m)
 {
 //  (*this)=m*(*this);
-    float x=data[0];
-    float y=data[1];
-    float z=data[2];
+    simMathReal x=data[0];
+    simMathReal y=data[1];
+    simMathReal z=data[2];
     data[0]=m.axis[0].data[0]*x+m.axis[1].data[0]*y+m.axis[2].data[0]*z;
     data[1]=m.axis[0].data[1]*x+m.axis[1].data[1]*y+m.axis[2].data[1]*z;
     data[2]=m.axis[0].data[2]*x+m.axis[1].data[2]*y+m.axis[2].data[2]*z;
@@ -81,7 +81,7 @@ void C3Vector::operator*= (const C7Vector& transf)
     (*this)=transf*(*this);
 }
 
-void C3Vector::buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,float t)
+void C3Vector::buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,simMathReal t)
 {
     (*this)=fromThis+((toThat-fromThis)*t);
 }
