@@ -48,17 +48,17 @@ public:
         simMathReal l2=v*v;
         return((scalProdSq/(l1*l2))>=precision);
     }
-    inline simMathReal& operator() (unsigned i)
+    inline simMathReal& operator() (size_t i)
     {
         return(data[i]);
     }
-    inline const simMathReal& operator() (unsigned i) const
+    inline const simMathReal& operator() (size_t i) const
     {
         return(data[i]);
     }
     inline simMathReal getLength() const
     {
-        return(sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]));
+        return(sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]));
     }
     inline void copyTo(simMathReal v[3]) const
     {
@@ -81,8 +81,8 @@ public:
     inline C3Vector getNormalized() const
     {
         C3Vector retV;
-        simMathReal l=sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
-        if (l!=0.0f)
+        simMathReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
+        if (l!=simZero)
         {
             retV(0)=data[0]/l;
             retV(1)=data[1]/l;
@@ -121,8 +121,8 @@ public:
     }
     inline void normalize()
     {
-        simMathReal l=sqrtf(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
-        if (l!=0.0f)
+        simMathReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
+        if (l!=simZero)
         {
             data[0]=data[0]/l;
             data[1]=data[1]/l;
@@ -131,9 +131,9 @@ public:
     }
     inline void clear()
     {
-        data[0]=0.0f;
-        data[1]=0.0f;
-        data[2]=0.0f;
+        data[0]=simZero;
+        data[1]=simZero;
+        data[2]=simZero;
     }
     inline C3Vector operator/ (simMathReal d) const
     {

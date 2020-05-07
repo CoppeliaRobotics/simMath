@@ -10,7 +10,7 @@ class CMatrix
 {
 public:
     CMatrix();
-    CMatrix(int nRows,int nCols);
+    CMatrix(size_t nRows,size_t nCols);
     CMatrix(const C3X3Matrix& m);
     CMatrix(const C4X4Matrix& m);
     CMatrix(const C6X6Matrix& m);
@@ -43,28 +43,28 @@ public:
     CMatrix& operator= (const C6X6Matrix& m);
     CMatrix& operator= (const CMatrix& m);
 
-inline simMathReal& operator() (int row,int col)
+inline simMathReal& operator() (size_t row,size_t col)
 {
     return(data[row*cols+col]);
 }
 
-inline simMathReal getAt(int row,int col) const
+inline simMathReal getAt(size_t row,size_t col) const
 {
     return(data[row*cols+col]);
 }
 
-inline void setAt(int row,int col,simMathReal value)
+inline void setAt(size_t row,size_t col,simMathReal value)
 {
     data[row*cols+col]=value;
 }
  
-inline const simMathReal& operator() (int row,int col) const
+inline const simMathReal& operator() (size_t row,size_t col) const
 {
     return(data[row*cols+col]);
 }
 
 
-    int rows,cols;
+    size_t rows,cols;
     simMathReal* data;
 };
 

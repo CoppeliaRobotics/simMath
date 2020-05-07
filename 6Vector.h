@@ -41,14 +41,14 @@ public:
         V[0].setInternalData(d+0);
         V[1].setInternalData(d+3);
     }
-    inline simMathReal& operator() (unsigned i)
+    inline simMathReal& operator() (size_t i)
     {
         if (i<3)
             return(V[0](i));
         else
             return(V[1](i-3));
     }
-    inline const simMathReal& operator() (unsigned i) const
+    inline const simMathReal& operator() (size_t i) const
     {
         if (i<3)
             return(V[0](i));
