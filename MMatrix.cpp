@@ -3,6 +3,9 @@
 
 CMatrix::CMatrix()
 {
+    data=nullptr;
+    rows=0;
+    cols=0;
 }
 
 CMatrix::CMatrix(size_t nRows,size_t nCols)
