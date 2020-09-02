@@ -8,8 +8,8 @@ class C4Vector
 {
 public:
     C4Vector();
-    C4Vector(simMathReal v0,simMathReal v1,simMathReal v2,simMathReal v3);
-    C4Vector(const simMathReal v[4]);
+    C4Vector(simMathReal w,simMathReal x,simMathReal y,simMathReal z);
+    C4Vector(const simMathReal wxyz[4],bool xyzwLayout=false);
     C4Vector(const C3Vector& v);
     C4Vector(const C4Vector& q);
     C4Vector(simMathReal a,simMathReal b,simMathReal g);
@@ -31,19 +31,39 @@ public:
     
     C3Vector getEulerAngles() const;
 
-    inline void getInternalData(simMathReal d[4]) const
+    inline void getInternalData(simMathReal wxyz[4],bool xyzwLayout=false) const
     {
-        d[0]=data[0];
-        d[1]=data[1];
-        d[2]=data[2];
-        d[3]=data[3];
+        if (xyzwLayout)
+        {
+            wxyz[3]=data[0];
+            wxyz[0]=data[1];
+            wxyz[1]=data[2];
+            wxyz[2]=data[3];
+        }
+        else
+        {
+            wxyz[0]=data[0];
+            wxyz[1]=data[1];
+            wxyz[2]=data[2];
+            wxyz[3]=data[3];
+        }
     }
-    inline void setInternalData(const simMathReal d[4])
+    inline void setInternalData(const simMathReal wxyz[4],bool xyzwLayout=false)
     {
-        data[0]=d[0];
-        data[1]=d[1];
-        data[2]=d[2];
-        data[3]=d[3];
+        if (xyzwLayout)
+        {
+            data[0]=wxyz[3];
+            data[1]=wxyz[0];
+            data[2]=wxyz[1];
+            data[3]=wxyz[2];
+        }
+        else
+        {
+            data[0]=wxyz[0];
+            data[1]=wxyz[1];
+            data[2]=wxyz[2];
+            data[3]=wxyz[3];
+        }
     }
     inline simMathReal& operator() (size_t i)
     {
@@ -198,5 +218,5 @@ public:
 
     static const C4Vector identityRotation;
 
-    simMathReal data[4];
+    simMathReal data[4]; // quaternion storage: wxyz
 };

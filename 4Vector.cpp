@@ -5,21 +5,31 @@ C4Vector::C4Vector()
 {
 }
 
-C4Vector::C4Vector(simMathReal v0,simMathReal v1,simMathReal v2,simMathReal v3)
+C4Vector::C4Vector(simMathReal w,simMathReal x,simMathReal y,simMathReal z)
 {
-    data[0]=v0;
-    data[1]=v1;
-    data[2]=v2;
-    data[3]=v3;
+    data[0]=w;
+    data[1]=x;
+    data[2]=y;
+    data[3]=z;
     // We don't normalize here
 }
 
-C4Vector::C4Vector(const simMathReal v[4])
+C4Vector::C4Vector(const simMathReal wxyz[4],bool xyzwLayout/*=false*/)
 {
-    data[0]=v[0];
-    data[1]=v[1];
-    data[2]=v[2];
-    data[3]=v[3];
+    if (xyzwLayout)
+    {
+        data[0]=wxyz[3];
+        data[1]=wxyz[0];
+        data[2]=wxyz[1];
+        data[3]=wxyz[2];
+    }
+    else
+    {
+        data[0]=wxyz[0];
+        data[1]=wxyz[1];
+        data[2]=wxyz[2];
+        data[3]=wxyz[3];
+    }
     // We don't normalize here
 }
 
