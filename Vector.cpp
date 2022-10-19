@@ -2,52 +2,52 @@
 
 CVector::CVector()
 {
+    elements=0;
 }
 
 CVector::CVector(size_t nElements)
 {
-    data=new simMathReal[nElements];
+    data.resize(nElements);
     elements=nElements;
 }
 
 CVector::CVector(const C3Vector& v)
 {
-    data=new simMathReal[3];
+    data.resize(3);
     elements=3;
     (*this)=v;
 }
 
 CVector::CVector(const C4Vector& v)
 {
-    data=new simMathReal[4];
+    data.resize(4);
     elements=4;
     (*this)=v;
 }
 
 CVector::CVector(const C6Vector& v)
 {
-    data=new simMathReal[6];
+    data.resize(6);
     elements=6;
     (*this)=v;
 }
 
 CVector::CVector(const C7Vector& v)
 {
-    data=new simMathReal[7];
+    data.resize(7);
     elements=7;
     (*this)=v;
 }
 
 CVector::CVector(const CVector& v)
 {
-    data=new simMathReal[v.elements];
+    data.resize(v.elements);
     elements=v.elements;
     (*this)=v;
 }
  
 CVector::~CVector()
 {
-   delete[] data;
 } 
 
 CVector& CVector::operator= (const C3Vector& v)

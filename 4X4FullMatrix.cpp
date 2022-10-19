@@ -373,6 +373,11 @@ void C4X4FullMatrix::buildTranslation(simMathReal x, simMathReal y, simMathReal 
     data[3][3]=simOne;
 }
 
+C4X4Matrix C4X4FullMatrix::getMatrix() const
+{
+    return(C4X4Matrix(data));
+}
+
 C3Vector C4X4FullMatrix::getEulerAngles() const
 { // Angles are in radians!! // THERE IS ANOTHER SUCH ROUTINE IN C4X4MATRIX
     C3Vector retV;

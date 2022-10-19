@@ -5,6 +5,7 @@
 #include "4Vector.h"
 #include "6Vector.h"
 #include "7Vector.h"
+#include <vector>
 
 class CVector  
 {
@@ -52,6 +53,6 @@ inline const simMathReal& operator() (size_t i) const
 
     size_t elements;
 private:
-    simMathReal* data;
+    std::vector<simMathReal> data;
 };
 

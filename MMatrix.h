@@ -17,6 +17,8 @@ public:
     CMatrix(const CMatrix& m);
     ~CMatrix();
 
+    void resize(size_t nRows,size_t nCols);
+    void set(const CMatrix& m);
     bool inverse();
     void transpose();
     void clear();
@@ -63,9 +65,8 @@ inline const simMathReal& operator() (size_t row,size_t col) const
     return(data[row*cols+col]);
 }
 
-
     size_t rows,cols;
-    simMathReal* data;
+    std::vector<simMathReal> data;
 };
 
 

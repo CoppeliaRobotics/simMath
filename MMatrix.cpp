@@ -3,21 +3,20 @@
 
 CMatrix::CMatrix()
 {
-    data=nullptr;
     rows=0;
     cols=0;
 }
 
 CMatrix::CMatrix(size_t nRows,size_t nCols)
 {
-    data=new simMathReal[nRows*nCols];
+    data.resize(nRows*nCols);
     rows=nRows;
     cols=nCols;
 }
 
 CMatrix::CMatrix(const C3X3Matrix& m)
 {
-    data=new simMathReal[9];
+    data.resize(9);
     rows=3;
     cols=3;
     (*this)=m;
@@ -25,7 +24,7 @@ CMatrix::CMatrix(const C3X3Matrix& m)
 
 CMatrix::CMatrix(const C4X4Matrix& m)
 {
-    data=new simMathReal[16];
+    data.resize(16);
     rows=4;
     cols=4;
     (*this)=m;
@@ -33,7 +32,7 @@ CMatrix::CMatrix(const C4X4Matrix& m)
 
 CMatrix::CMatrix(const C6X6Matrix& m)
 {
-    data=new simMathReal[36];
+    data.resize(36);
     rows=6;
     cols=6;
     (*this)=m;
@@ -41,7 +40,7 @@ CMatrix::CMatrix(const C6X6Matrix& m)
 
 CMatrix::CMatrix(const CMatrix& m)
 {
-    data=new simMathReal[m.rows*m.cols];
+    data.resize(m.rows*m.cols);
     rows=m.rows;
     cols=m.cols;
     (*this)=m;
@@ -49,8 +48,21 @@ CMatrix::CMatrix(const CMatrix& m)
  
 CMatrix::~CMatrix()
 {
-   delete[] data;
-} 
+}
+
+void CMatrix::resize(size_t nRows,size_t nCols)
+{ // old data is discarded
+    data.resize(nRows*nCols);
+    rows=nRows;
+    cols=nCols;
+}
+
+void CMatrix::set(const CMatrix& m)
+{
+    resize(m.rows,m.cols);
+    for (size_t i=0;i<rows*cols;i++)
+        data[i]=m.data[i];
+}
 
 void CMatrix::clear()
 {

@@ -18,6 +18,7 @@ public:
     void buildZRotation(simMathReal angle);
     void buildTranslation(simMathReal x, simMathReal y, simMathReal z);
     C3Vector getEulerAngles() const;
+    C4X4Matrix getMatrix() const;
 
     C4X4FullMatrix operator* (const C4X4FullMatrix& m) const;
     C4X4FullMatrix operator* (simMathReal d) const;
