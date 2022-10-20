@@ -17,7 +17,7 @@ public:
     CMatrix(const CMatrix& m);
     ~CMatrix();
 
-    void resize(size_t nRows,size_t nCols);
+    void resize(size_t nRows,size_t nCols,simMathReal def);
     void set(const CMatrix& m);
     bool inverse();
     void transpose();

@@ -40,28 +40,41 @@ CMatrix::CMatrix(const C6X6Matrix& m)
 
 CMatrix::CMatrix(const CMatrix& m)
 {
-    data.resize(m.rows*m.cols);
     rows=m.rows;
     cols=m.cols;
-    (*this)=m;
+    data.assign(m.data.begin(),m.data.end());
 }
  
 CMatrix::~CMatrix()
 {
 }
 
-void CMatrix::resize(size_t nRows,size_t nCols)
-{ // old data is discarded
-    data.resize(nRows*nCols);
+void CMatrix::resize(size_t nRows,size_t nCols,simMathReal def)
+{ // old data is kept
+    CMatrix a(nRows,nCols);
+    for (size_t i=0;i<nRows*nCols;i++)
+        a.data[i]=def;
+    for (size_t i=0;i<rows;i++)
+    {
+        if (i<nRows)
+        {
+            for (size_t j=0;j<cols;j++)
+            {
+                if (j<nCols)
+                    a(i,j)=(*this)(i,j);
+            }
+        }
+    }
+    data.assign(a.data.begin(),a.data.end());
     rows=nRows;
     cols=nCols;
 }
 
 void CMatrix::set(const CMatrix& m)
 {
-    resize(m.rows,m.cols);
-    for (size_t i=0;i<rows*cols;i++)
-        data[i]=m.data[i];
+    data.assign(m.data.begin(),m.data.end());
+    rows=m.rows;
+    cols=m.cols;
 }
 
 void CMatrix::clear()
