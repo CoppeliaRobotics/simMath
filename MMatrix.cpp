@@ -271,7 +271,10 @@ CMatrix& CMatrix::operator= (const C6X6Matrix& m)
 
 CMatrix& CMatrix::operator= (const CMatrix& m)
 {
+    rows=m.rows;
+    cols=m.cols;
     size_t t=rows*cols;
+    data.resize(t);
     for (size_t i=0;i<t;i++)
         data[i]=m.data[i];
     return(*this);
