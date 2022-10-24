@@ -1,5 +1,4 @@
 #include "4X4Matrix.h"
-#include "4X4FullMatrix.h"
 #include "MMatrix.h"
 
 C4X4Matrix::C4X4Matrix()
@@ -61,23 +60,6 @@ C4X4Matrix C4X4Matrix::operator* (const CMatrix& m) const
 }
 
 C4X4Matrix& C4X4Matrix::operator= (const CMatrix& m)
-{
-    M.axis[0](0)=m(0,0);
-    M.axis[0](1)=m(1,0);
-    M.axis[0](2)=m(2,0);
-    M.axis[1](0)=m(0,1);
-    M.axis[1](1)=m(1,1);
-    M.axis[1](2)=m(2,1);
-    M.axis[2](0)=m(0,2);
-    M.axis[2](1)=m(1,2);
-    M.axis[2](2)=m(2,2);
-    X(0)=m(0,3);
-    X(1)=m(1,3);
-    X(2)=m(2,3);
-    return(*this);
-}
-
-C4X4Matrix& C4X4Matrix::operator= (const C4X4FullMatrix& m)
 {
     M.axis[0](0)=m(0,0);
     M.axis[0](1)=m(1,0);

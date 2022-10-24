@@ -30,14 +30,6 @@ CMatrix::CMatrix(const C4X4Matrix& m)
     (*this)=m;
 }
 
-CMatrix::CMatrix(const C6X6Matrix& m)
-{
-    data.resize(36);
-    rows=6;
-    cols=6;
-    (*this)=m;
-}
-
 CMatrix::CMatrix(const CMatrix& m)
 {
     rows=m.rows;
@@ -130,21 +122,6 @@ CMatrix CMatrix::operator* (const C4X4Matrix& m) const
     return(retM);
 }
 
-CMatrix CMatrix::operator* (const C6X6Matrix& m) const
-{
-    CMatrix retM(rows,6);
-    for (size_t i=0;i<rows;i++)
-    {
-        for (size_t j=0;j<6;j++)
-        {
-            retM(i,j)=simZero;
-            for (size_t k=0;k<6;k++)
-                retM(i,j)+=( (*this)(i,k)*m(k,j) );
-        }
-    }
-    return(retM);
-}
-
 CMatrix CMatrix::operator* (const CMatrix& m) const
 {
     CMatrix retM(rows,m.cols);
@@ -222,18 +199,6 @@ void CMatrix::operator/= (simMathReal d)
 }
 
 
-CVector CMatrix::operator* (const CVector& v) const
-{
-    CVector retV(v.elements);
-    for (size_t i=0;i<rows;i++)
-    {
-        retV(i)=simZero;
-        for (size_t k=0;k<cols;k++)
-            retV(i)+=( (*this)(i,k)*v(k) );
-    }
-    return(retV);
-}
-
 CMatrix& CMatrix::operator= (const C3X3Matrix& m)
 {
     for (size_t i=0;i<3;i++)
@@ -256,16 +221,6 @@ CMatrix& CMatrix::operator= (const C4X4Matrix& m)
     (*this)(3,1)=simZero;
     (*this)(3,2)=simZero;
     (*this)(3,3)=simOne;
-    return(*this);
-}
-
-CMatrix& CMatrix::operator= (const C6X6Matrix& m)
-{
-    for (size_t i=0;i<6;i++)
-    {
-        for (size_t j=0;j<6;j++)
-            (*this)(i,j)=m(i,j);
-    }
     return(*this);
 }
 
