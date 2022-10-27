@@ -27,26 +27,16 @@ C4X4Matrix::C4X4Matrix(const CMatrix& m)
     (*this)=m;
 }
 
-C4X4Matrix::C4X4Matrix(const simMathReal m[4][4])
-{
-    for (size_t i=0;i<3;i++)
-    {
-        for (size_t j=0;j<3;j++)
-            M(i,j)=m[i][j];
-        X(i)=m[i][3];
-    }
-}
-
 C4X4Matrix::C4X4Matrix(const C3Vector& x,const C3Vector& y,const C3Vector& z,const C3Vector& pos)
 {
-    M.set(x,y,z);
+    M.setAxes(x,y,z);
     X=pos;
 }
 
 C4X4Matrix::~C4X4Matrix()
 {
-
 }
+
 void C4X4Matrix::setIdentity()
 {
     M.setIdentity();
@@ -145,3 +135,188 @@ void C4X4Matrix::translate(simMathReal x,simMathReal y,simMathReal z)
     X(1)+=y;
     X(2)+=z;
 }
+
+void C4X4Matrix::inverse()
+{
+    // Speed optimized version:
+    simMathReal tmp=M.axis[0](1);
+    M.axis[0](1)=M.axis[1](0);
+    M.axis[1](0)=tmp;;
+    tmp=M.axis[0](2);
+    M.axis[0](2)=M.axis[2](0);
+    M.axis[2](0)=tmp;;
+    tmp=M.axis[1](2);
+    M.axis[1](2)=M.axis[2](1);
+    M.axis[2](1)=tmp;;
+    simMathReal v[3]={-X(0),-X(1),-X(2)};
+    X(0)=M.axis[0](0)*v[0]+M.axis[1](0)*v[1]+M.axis[2](0)*v[2];
+    X(1)=M.axis[0](1)*v[0]+M.axis[1](1)*v[1]+M.axis[2](1)*v[2];
+    X(2)=M.axis[0](2)*v[0]+M.axis[1](2)*v[1]+M.axis[2](2)*v[2];
+    // Normal version:
+    //  (*this)=getInverse();
+}
+void C4X4Matrix::getData(simMathReal* m) const
+{
+    for (size_t i=0;i<3;i++)
+    {
+        m[4*i+0]=M.axis[0](i);
+        m[4*i+1]=M.axis[1](i);
+        m[4*i+2]=M.axis[2](i);
+        m[4*i+3]=X(i);
+    }
+}
+
+void C4X4Matrix::setData(const simMathReal* m)
+{
+    for (size_t i=0;i<3;i++)
+    {
+        M.axis[0](i)=m[4*i+0];
+        M.axis[1](i)=m[4*i+1];
+        M.axis[2](i)=m[4*i+2];
+        X(i)=m[4*i+3];
+    }
+}
+
+bool C4X4Matrix::isValid() const
+{
+    if (!M.isValid())
+        return(false);
+    if (!X.isValid())
+        return(false);
+    return(true);
+}
+
+C4X4Matrix C4X4Matrix::getInverse() const
+{
+    C4X4Matrix retM(*this);
+    retM.inverse();
+    return(retM);
+}
+
+void C4X4Matrix::setMultResult(const C4X4Matrix& m1,const C4X4Matrix& m2)
+{ // Use this routine to avoid temporary variables
+    M.axis[0](0)=m1.M.axis[0](0)*m2.M.axis[0](0)+m1.M.axis[1](0)*m2.M.axis[0](1)+m1.M.axis[2](0)*m2.M.axis[0](2);
+    M.axis[0](1)=m1.M.axis[0](1)*m2.M.axis[0](0)+m1.M.axis[1](1)*m2.M.axis[0](1)+m1.M.axis[2](1)*m2.M.axis[0](2);
+    M.axis[0](2)=m1.M.axis[0](2)*m2.M.axis[0](0)+m1.M.axis[1](2)*m2.M.axis[0](1)+m1.M.axis[2](2)*m2.M.axis[0](2);
+    M.axis[1](0)=m1.M.axis[0](0)*m2.M.axis[1](0)+m1.M.axis[1](0)*m2.M.axis[1](1)+m1.M.axis[2](0)*m2.M.axis[1](2);
+    M.axis[1](1)=m1.M.axis[0](1)*m2.M.axis[1](0)+m1.M.axis[1](1)*m2.M.axis[1](1)+m1.M.axis[2](1)*m2.M.axis[1](2);
+    M.axis[1](2)=m1.M.axis[0](2)*m2.M.axis[1](0)+m1.M.axis[1](2)*m2.M.axis[1](1)+m1.M.axis[2](2)*m2.M.axis[1](2);
+    M.axis[2](0)=m1.M.axis[0](0)*m2.M.axis[2](0)+m1.M.axis[1](0)*m2.M.axis[2](1)+m1.M.axis[2](0)*m2.M.axis[2](2);
+    M.axis[2](1)=m1.M.axis[0](1)*m2.M.axis[2](0)+m1.M.axis[1](1)*m2.M.axis[2](1)+m1.M.axis[2](1)*m2.M.axis[2](2);
+    M.axis[2](2)=m1.M.axis[0](2)*m2.M.axis[2](0)+m1.M.axis[1](2)*m2.M.axis[2](1)+m1.M.axis[2](2)*m2.M.axis[2](2);
+    X(0)=m1.M.axis[0](0)*m2.X(0)+m1.M.axis[1](0)*m2.X(1)+m1.M.axis[2](0)*m2.X(2)+m1.X(0);
+    X(1)=m1.M.axis[0](1)*m2.X(0)+m1.M.axis[1](1)*m2.X(1)+m1.M.axis[2](1)*m2.X(2)+m1.X(1);
+    X(2)=m1.M.axis[0](2)*m2.X(0)+m1.M.axis[1](2)*m2.X(1)+m1.M.axis[2](2)*m2.X(2)+m1.X(2);
+}
+
+C4X4Matrix C4X4Matrix::operator* (const C4X4Matrix& m) const
+{   // Speed optimized version:
+    C4X4Matrix retM;
+    retM.M.axis[0](0)=M.axis[0](0)*m.M.axis[0](0)+M.axis[1](0)*m.M.axis[0](1)+M.axis[2](0)*m.M.axis[0](2);
+    retM.M.axis[0](1)=M.axis[0](1)*m.M.axis[0](0)+M.axis[1](1)*m.M.axis[0](1)+M.axis[2](1)*m.M.axis[0](2);
+    retM.M.axis[0](2)=M.axis[0](2)*m.M.axis[0](0)+M.axis[1](2)*m.M.axis[0](1)+M.axis[2](2)*m.M.axis[0](2);
+    retM.M.axis[1](0)=M.axis[0](0)*m.M.axis[1](0)+M.axis[1](0)*m.M.axis[1](1)+M.axis[2](0)*m.M.axis[1](2);
+    retM.M.axis[1](1)=M.axis[0](1)*m.M.axis[1](0)+M.axis[1](1)*m.M.axis[1](1)+M.axis[2](1)*m.M.axis[1](2);
+    retM.M.axis[1](2)=M.axis[0](2)*m.M.axis[1](0)+M.axis[1](2)*m.M.axis[1](1)+M.axis[2](2)*m.M.axis[1](2);
+    retM.M.axis[2](0)=M.axis[0](0)*m.M.axis[2](0)+M.axis[1](0)*m.M.axis[2](1)+M.axis[2](0)*m.M.axis[2](2);
+    retM.M.axis[2](1)=M.axis[0](1)*m.M.axis[2](0)+M.axis[1](1)*m.M.axis[2](1)+M.axis[2](1)*m.M.axis[2](2);
+    retM.M.axis[2](2)=M.axis[0](2)*m.M.axis[2](0)+M.axis[1](2)*m.M.axis[2](1)+M.axis[2](2)*m.M.axis[2](2);
+    retM.X(0)=M.axis[0](0)*m.X(0)+M.axis[1](0)*m.X(1)+M.axis[2](0)*m.X(2)+X(0);
+    retM.X(1)=M.axis[0](1)*m.X(0)+M.axis[1](1)*m.X(1)+M.axis[2](1)*m.X(2)+X(1);
+    retM.X(2)=M.axis[0](2)*m.X(0)+M.axis[1](2)*m.X(1)+M.axis[2](2)*m.X(2)+X(2);
+    return(retM);
+    /*  // Normal version:
+    C4X4Matrix retM;
+    retM.M=M*m.M;
+    retM.X=(M*m.X)+X;
+    return(retM);
+    //  */
+}
+
+C3Vector C4X4Matrix::operator* (const C3Vector& v) const
+{
+    // Speed optimized version:
+    return(C3Vector(M.axis[0](0)*v(0)+M.axis[1](0)*v(1)+M.axis[2](0)*v(2)+X(0),
+        M.axis[0](1)*v(0)+M.axis[1](1)*v(1)+M.axis[2](1)*v(2)+X(1),
+        M.axis[0](2)*v(0)+M.axis[1](2)*v(1)+M.axis[2](2)*v(2)+X(2)));
+    // Normal version:
+    //  return(C3Vector((M*v)+X));
+}
+
+C4X4Matrix& C4X4Matrix::operator= (const C4X4Matrix& m)
+{
+    // Speed optimized version:
+    M.axis[0](0)=m.M.axis[0](0);
+    M.axis[0](1)=m.M.axis[0](1);
+    M.axis[0](2)=m.M.axis[0](2);
+    M.axis[1](0)=m.M.axis[1](0);
+    M.axis[1](1)=m.M.axis[1](1);
+    M.axis[1](2)=m.M.axis[1](2);
+    M.axis[2](0)=m.M.axis[2](0);
+    M.axis[2](1)=m.M.axis[2](1);
+    M.axis[2](2)=m.M.axis[2](2);
+    X(0)=m.X(0);
+    X(1)=m.X(1);
+    X(2)=m.X(2);
+    return(*this);
+    /*  // Normal version:
+    M=m.M;
+    X=m.X;
+    return(*this);
+    //  */
+}
+
+void C4X4Matrix::operator*= (const C4X4Matrix& m)
+{
+    C4X4Matrix retM((*this)*m);
+    (*this)=retM;
+}
+
+/*
+void C4X4Matrix::set(const simMathReal m[4][4])
+{ // Avoid using this. Use get/setData instead
+    for (size_t i=0;i<3;i++)
+    {
+        for (size_t j=0;j<3;j++)
+            M.axis[j](i)=m[i][j];
+        X(i)=m[i][3];
+    }
+}
+
+void C4X4Matrix::get(simMathReal m[4][4]) const
+{ // Avoid using this. Use get/setData instead
+    for (size_t i=0;i<3;i++)
+    {
+        for (size_t j=0;j<3;j++)
+            m[i][j]=M(i,j);
+        m[i][3]=X(i);
+    }
+    m[3][0]=simZero;
+    m[3][1]=simZero;
+    m[3][2]=simZero;
+    m[3][3]=simOne;
+}
+
+void C4X4Matrix::get(simMathReal* m) const
+{ // Avoid using this. Use get/setData instead
+    getData(m);
+}
+
+void C4X4Matrix::set(const simMathReal* m)
+{ // Avoid using this. Use get/setData instead
+    setData(m);
+}
+void C4X4Matrix::copyTo(simMathReal m[4][4]) const
+{ // Avoid using this. Use get/setData instead
+    get(m);
+}
+void C4X4Matrix::copyToInterface(simMathReal* m) const
+{ // Avoid using this. Use get/setData instead
+    getData(m);
+}
+
+void C4X4Matrix::copyFromInterface(const simMathReal* m)
+{ // Avoid using this. Use get/setData instead
+    setData(m);
+}
+//*/

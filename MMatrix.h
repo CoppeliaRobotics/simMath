@@ -21,7 +21,21 @@ public:
     void transpose();
     void clear();
     void setIdentity();
+    simMathReal getAt(size_t row,size_t col) const;
+    void setAt(size_t row,size_t col,simMathReal value);
 
+    simMathReal& operator() (size_t row,size_t col);
+    const simMathReal& operator() (size_t row,size_t col) const;
+
+    void operator*= (const CMatrix& m);
+    void operator*= (simMathReal d);
+    void operator/= (simMathReal d);
+    void operator+= (const CMatrix& m);
+    void operator-= (const CMatrix& m);
+
+    CMatrix& operator= (const C3X3Matrix& m);
+    CMatrix& operator= (const C4X4Matrix& m);
+    CMatrix& operator= (const CMatrix& m);
     CMatrix operator* (const C3X3Matrix& m) const;
     CMatrix operator* (const C4X4Matrix& m) const;
     CMatrix operator* (const CMatrix& m) const;
@@ -29,36 +43,6 @@ public:
     CMatrix operator/ (simMathReal d) const;
     CMatrix operator+ (const CMatrix& m) const;
     CMatrix operator- (const CMatrix& m) const;
-    
-    void operator*= (const CMatrix& m);
-    void operator+= (const CMatrix& m);
-    void operator-= (const CMatrix& m);
-    void operator*= (simMathReal d);
-    void operator/= (simMathReal d);
-
-    CMatrix& operator= (const C3X3Matrix& m);
-    CMatrix& operator= (const C4X4Matrix& m);
-    CMatrix& operator= (const CMatrix& m);
-
-inline simMathReal& operator() (size_t row,size_t col)
-{
-    return(data[row*cols+col]);
-}
-
-inline simMathReal getAt(size_t row,size_t col) const
-{
-    return(data[row*cols+col]);
-}
-
-inline void setAt(size_t row,size_t col,simMathReal value)
-{
-    data[row*cols+col]=value;
-}
- 
-inline const simMathReal& operator() (size_t row,size_t col) const
-{
-    return(data[row*cols+col]);
-}
 
     size_t rows,cols;
     std::vector<simMathReal> data;

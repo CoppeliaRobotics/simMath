@@ -350,3 +350,23 @@ bool CMatrix::inverse()
     delete[] indxc;
     return(true);
 }
+
+simMathReal& CMatrix::operator() (size_t row,size_t col)
+{
+    return(data[row*cols+col]);
+}
+
+simMathReal CMatrix::getAt(size_t row,size_t col) const
+{
+    return(data[row*cols+col]);
+}
+
+void CMatrix::setAt(size_t row,size_t col,simMathReal value)
+{
+    data[row*cols+col]=value;
+}
+
+const simMathReal& CMatrix::operator() (size_t row,size_t col) const
+{
+    return(data[row*cols+col]);
+}

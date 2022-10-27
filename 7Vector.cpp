@@ -1,6 +1,8 @@
 #include "7Vector.h"
 #include "4X4Matrix.h"
 
+const C7Vector C7Vector::identityTransformation(C4Vector(simOne,simZero,simZero,simZero),C3Vector(simZero,simZero,simZero));
+
 C7Vector::C7Vector()
 {
 }
@@ -28,14 +30,9 @@ C7Vector::C7Vector(const C4Vector& q,const C3Vector& x)
     X=x;
 }
 
-C7Vector::C7Vector(const simMathReal m[4][4])
-{
-    set(m);
-}
-
 C7Vector::C7Vector(const C4X4Matrix& m)
 {
-    set(m);
+    setFromMatrix(m);
 }
 
 C7Vector::C7Vector(simMathReal angle,const C3Vector& pos,const C3Vector& dir)
@@ -60,17 +57,6 @@ C7Vector::~C7Vector()
 
 }
 
-void C7Vector::set(simMathReal m[4][4])
-{
-    C4X4Matrix tr(m);
-    (*this)=tr.getTransformation();
-}
-
-void C7Vector::set(const C4X4Matrix& m)
-{
-    (*this)=m.getTransformation();
-}
-
 C3Vector C7Vector::getAxis(size_t index) const
 {
     return(Q.getAxis(index));
@@ -85,20 +71,6 @@ void C7Vector::setIdentity()
 C4X4Matrix C7Vector::getMatrix() const
 {
     return(C4X4Matrix(Q.getMatrix(),X));
-}
-void C7Vector::copyTo(simMathReal m[4][4]) const
-{ // Temporary routine. Remove later!
-    C4X4Matrix tmp(getMatrix());
-    for (size_t i=0;i<3;i++)
-    {
-        for (size_t j=0;j<3;j++)
-            m[i][j]=tmp.M(i,j);
-        m[i][3]=tmp.X(i);
-    }
-    m[3][0]=simZero;
-    m[3][1]=simZero;
-    m[3][2]=simZero;
-    m[3][3]=simOne;
 }
 
 C7Vector& C7Vector::operator= (const C7Vector& v)
@@ -153,4 +125,84 @@ void C7Vector::buildInterpolation(const C7Vector& fromThis,const C7Vector& toTha
     X.buildInterpolation(fromThis.X,toThat.X,t);
 }
 
-const C7Vector C7Vector::identityTransformation(C4Vector(simOne,simZero,simZero,simZero),C3Vector(simZero,simZero,simZero));
+void C7Vector::getData(simMathReal d[7],bool xyzwLayout/*=false*/) const
+{
+    X.getData(d+0);
+    Q.getData(d+3,xyzwLayout);
+}
+
+void C7Vector::setData(const simMathReal d[7],bool xyzwLayout/*=false*/)
+{
+    X.setData(d+0);
+    Q.setData(d+3,xyzwLayout);
+}
+
+
+bool C7Vector::operator!= (const C7Vector& v)
+{
+    return( (Q!=v.Q)||(X!=v.X) );
+}
+
+simMathReal& C7Vector::operator() (size_t i)
+{
+    if (i<3)
+        return(X(i));
+    else
+        return(Q(i-3));
+}
+
+const simMathReal& C7Vector::operator() (size_t i) const
+{
+    if (i<3)
+        return(X(i));
+    else
+        return(Q(i-3));
+}
+
+void C7Vector::setFromMatrix(const C4X4Matrix& m)
+{
+    (*this)=m.getTransformation();
+}
+
+/*
+void C7Vector::copyTo(simMathReal m[4][4]) const
+{ // Avoid using this. Use get/setData instead
+    C4X4Matrix tmp(getMatrix());
+    for (size_t i=0;i<3;i++)
+    {
+        for (size_t j=0;j<3;j++)
+            m[i][j]=tmp.M(i,j);
+        m[i][3]=tmp.X(i);
+    }
+    m[3][0]=simZero;
+    m[3][1]=simZero;
+    m[3][2]=simZero;
+    m[3][3]=simOne;
+}
+
+void C7Vector::set(simMathReal m[4][4])
+{ // Avoid using this. Use get/setData instead
+    C4X4Matrix tr(m);
+    (*this)=tr.getTransformation();
+}
+
+void C7Vector::get(simMathReal d[7],bool xyzwLayout) const
+{ // Avoid using this. Use get/setData instead
+    getData(d,xyzwLayout);
+}
+
+void C7Vector::set(const simMathReal d[7],bool xyzwLayout)
+{ // Avoid using this. Use get/setData instead
+    setData(d,xyzwLayout);
+}
+
+void C7Vector::getInternalData(simMathReal d[7],bool xyzwLayout) const
+{ // Avoid using this. Use get/setData instead
+    getData(d,xyzwLayout);
+}
+
+void C7Vector::setInternalData(const simMathReal d[7],bool xyzwLayout)
+{ // Avoid using this. Use get/setData instead
+    setData(d,xyzwLayout);
+}
+*/
