@@ -28,7 +28,6 @@ public:
     simMathReal getAngleBetweenQuaternions(const C4Vector& q) const;
     C4Vector getAngleAndAxis() const;
     C3Vector getAngleAndAxis(simMathReal& angle) const;
-    C4Vector getAngleAndAxisNoChecking() const;
     C3Vector getAxis(size_t index) const;
     C3X3Matrix getMatrix() const;
     C3Vector getEulerAngles() const;

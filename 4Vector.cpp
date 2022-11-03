@@ -109,7 +109,7 @@ C3Vector C4Vector::getAngleAndAxis(simMathReal& angle) const
 {
     C3Vector retV;
     C4Vector d(*this);
-    if (d(0)<simZero)  // Condition added on 2009/02/26
+    if (d(0)<simZero)
         d=d*-simOne;
     simMathReal l=sqrt(d(0)*d(0)+d(1)*d(1)+d(2)*d(2)+d(3)*d(3));
     simMathReal cosA=d(0)/l; // Quaternion needs to be normalized
@@ -125,7 +125,6 @@ C3Vector C4Vector::getAngleAndAxis(simMathReal& angle) const
     retV(1)=d(2)/sinA;
     retV(2)=d(3)/sinA;
     return(retV);
-
 }
 
 C4Vector C4Vector::getAngleAndAxis() const
@@ -136,34 +135,10 @@ C4Vector C4Vector::getAngleAndAxis() const
     return(retVal);
 }
 
-C4Vector C4Vector::getAngleAndAxisNoChecking() const
-{ // Returned vector is (angle,x,y,z) (angle is in radians)
-    C4Vector retV;
-    C4Vector d(*this);
-    if (d(0)<simZero)  // Condition added on 2009/02/26
-        d=d*-simOne;
-    simMathReal l=sqrt(d(0)*d(0)+d(1)*d(1)+d(2)*d(2)+d(3)*d(3));
-    simMathReal cosA=d(0)/l; // Quaternion needs to be normalized
-    if (cosA>simOne) // Just make sure..
-        cosA=simOne;
-    retV(0)=acos(cosA)*simTwo;
-    simMathReal sinA=sqrt(simOne-cosA*cosA);
-    if (fabs(sinA)<simMathReal(0.00005))
-        sinA=simOne;
-    else
-        sinA*=l; // Quaternion needs to be normalized
-    retV(1)=d(1)/sinA;
-    retV(2)=d(2)/sinA;  
-    retV(3)=d(3)/sinA;
-    return(retV);
-}
-
-
 C3Vector C4Vector::getEulerAngles() const
-{ // angles are in radians!
+{
     return(getMatrix().getEulerAngles());
 }
-
 
 simMathReal C4Vector::getAngleBetweenQuaternions(const C4Vector& q) const
 {
