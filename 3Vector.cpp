@@ -4,10 +4,15 @@
 #include "4X4Matrix.h"
 #include "7Vector.h"
 
-const C3Vector C3Vector::unitXVector(simOne,simZero,simZero);
-const C3Vector C3Vector::unitYVector(simZero,simOne,simZero);
-const C3Vector C3Vector::unitZVector(simZero,simZero,simOne);
-const C3Vector C3Vector::zeroVector(simZero,simZero,simZero);
+const C3Vector C3Vector::unitXVector(1.0,0.0,0.0);
+const C3Vector C3Vector::unitYVector(0.0,1.0,0.0);
+const C3Vector C3Vector::unitZVector(0.0,0.0,1.0);
+const C3Vector C3Vector::zeroVector(0.0,0.0,0.0);
+
+C3Vector C3Vector::fromFloatPtr(const floatFloat* f)
+{
+    return(C3Vector((simMathReal)f[0],(simMathReal)f[1],(simMathReal)f[2]));
+}
 
 C3Vector::C3Vector()
 {
@@ -47,15 +52,15 @@ simMathReal C3Vector::getAngle(const C3Vector& v) const
 C3X3Matrix C3Vector::getProductWithStar() const
 {
     C3X3Matrix retM;
-    retM(0,0)=simZero;
+    retM(0,0)=0.0;
     retM(0,1)=-data[2];
     retM(0,2)=data[1];
     retM(1,0)=data[2];
-    retM(1,1)=simZero;
+    retM(1,1)=0.0;
     retM(1,2)=-data[0];
     retM(2,0)=-data[1];
     retM(2,1)=data[0];
-    retM(2,2)=simZero;
+    retM(2,2)=0.0;
     return(retM);
 }
 
@@ -120,11 +125,18 @@ simMathReal C3Vector::getLength() const
     return(sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]));
 }
 
-void C3Vector::setData(const simMathReal v[3])
+void C3Vector::setData(const floatFloat v[3])
 {
-    data[0]=v[0];
-    data[1]=v[1];
-    data[2]=v[2];
+    data[0]=(simMathReal)v[0];
+    data[1]=(simMathReal)v[1];
+    data[2]=(simMathReal)v[2];
+}
+
+void C3Vector::setData(const double v[3])
+{
+    data[0]=(simMathReal)v[0];
+    data[1]=(simMathReal)v[1];
+    data[2]=(simMathReal)v[2];
 }
 
 void C3Vector::getData(simMathReal v[3]) const
@@ -145,7 +157,7 @@ C3Vector C3Vector::getNormalized() const
 {
     C3Vector retV;
     simMathReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
-    if (l!=simZero)
+    if (l!=0.0)
     {
         retV(0)=data[0]/l;
         retV(1)=data[1]/l;
@@ -183,7 +195,7 @@ bool C3Vector::isValid() const
 void C3Vector::normalize()
 {
     simMathReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
-    if (l!=simZero)
+    if (l!=0.0)
     {
         data[0]=data[0]/l;
         data[1]=data[1]/l;
@@ -193,9 +205,9 @@ void C3Vector::normalize()
 
 void C3Vector::clear()
 {
-    data[0]=simZero;
-    data[1]=simZero;
-    data[2]=simZero;
+    data[0]=0.0;
+    data[1]=0.0;
+    data[2]=0.0;
 }
 
 C3Vector C3Vector::operator/ (simMathReal d) const
@@ -299,30 +311,3 @@ simMathReal C3Vector::operator* (const C3Vector& v) const
 { // Scalar product
     return(data[0]*v.data[0]+data[1]*v.data[1]+data[2]*v.data[2]);
 }
-
-/*
- * void C3Vector::set(const simMathReal v[3])
-{ // Avoid using this. Use get/setData instead
-    setData(v);
-}
-
-void C3Vector::get(simMathReal v[3]) const
-{ // Avoid using this. Use get/setData instead
-    getData(v);
-}
-
-void C3Vector::getInternalData(simMathReal d[3]) const
-{ // Avoid using this. Use get/setData instead
-    getData(d);
-}
-
-void C3Vector::setInternalData(const simMathReal d[3])
-{ // Avoid using this. Use get/setData instead
-    setData(d);
-}
-
-void C3Vector::copyTo(simMathReal v[3]) const
-{ // Avoid using this. Use get/setData instead
-    getData(v);
-}
-*/

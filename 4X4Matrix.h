@@ -34,17 +34,6 @@ public:
     void inverse();
     void getData(simMathReal* m) const;
     void setData(const simMathReal* m);
-    // Avoid using these:
-    /*
-    void get(simMathReal m[4][4]) const;
-    void set(const simMathReal m[4][4]);
-    void get(simMathReal* m) const;
-    void set(const simMathReal* m);
-    void copyTo(simMathReal m[4][4]) const;
-    void copyToInterface(simMathReal* m) const;
-    void copyFromInterface(const simMathReal* m);
-//*/
-    //--------------------------
     bool isValid() const;
     C4X4Matrix getInverse() const;
     void setMultResult(const C4X4Matrix& m1,const C4X4Matrix& m2);

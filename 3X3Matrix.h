@@ -30,19 +30,6 @@ public:
     void setAxes(const C3Vector& xAxis,const C3Vector& yAxis,const C3Vector& zAxis);
     void getData(simMathReal d[9]) const;
     void setData(const simMathReal d[9]);
-    // avoid those:
-    /*
-    void getInternalData(simMathReal d[9]) const;
-    void setInternalData(const simMathReal d[9]);
-    void get(simMathReal d[9]) const;
-    void set(const simMathReal d[9]);
-    void set(const C3Vector& xAxis,const C3Vector& yAxis,const C3Vector& zAxis);
-    void set(const simMathReal m[3][3]);
-    void copyTo(simMathReal m[3][3]) const;
-    void copyToInterface(simMathReal* m) const;
-    void copyFromInterface(const simMathReal* m);
-    */
-    // ---------
     bool isValid() const;
     C3X3Matrix getTranspose() const;
 

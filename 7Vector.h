@@ -28,16 +28,6 @@ public:
     void getData(simMathReal d[7],bool xyzwLayout=false) const;
     void setData(const simMathReal d[7],bool xyzwLayout=false);
     void setFromMatrix(const C4X4Matrix& m);
-    // Avoid using those:
-    /*
-    void set(simMathReal m[4][4]);
-    void copyTo(simMathReal m[4][4]) const;
-    void get(simMathReal d[7],bool xyzwLayout=false) const;
-    void set(const simMathReal d[7],bool xyzwLayout=false);
-    void getInternalData(simMathReal d[7],bool xyzwLayout=false) const;
-    void setInternalData(const simMathReal d[7],bool xyzwLayout=false);
-    */
-    //----------------------
 
     simMathReal& operator() (size_t i);
     const simMathReal& operator() (size_t i) const;

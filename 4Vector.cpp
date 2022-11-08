@@ -1,7 +1,7 @@
 #include "4Vector.h"
 #include "MyMath.h"
 
-const C4Vector C4Vector::identityRotation(simOne,simZero,simZero,simZero);
+const C4Vector C4Vector::identityRotation(1.0,0.0,0.0,0.0);
 
 C4Vector::C4Vector()
 {
@@ -71,9 +71,9 @@ C4Vector::~C4Vector()
 
 void C4Vector::setEulerAngles(simMathReal a,simMathReal b,simMathReal g)
 { // a,b anf g are in radian!
-    C4Vector vx(a,C3Vector(simOne,simZero,simZero));
-    C4Vector vy(b,C3Vector(simZero,simOne,simZero));
-    C4Vector vz(g,C3Vector(simZero,simZero,simOne));
+    C4Vector vx(a,C3Vector(1.0,0.0,0.0));
+    C4Vector vy(b,C3Vector(0.0,1.0,0.0));
+    C4Vector vz(g,C3Vector(0.0,0.0,1.0));
     (*this)=vx*vy*vz;
 }
 
@@ -86,11 +86,11 @@ void C4Vector::setAngleAndAxis(simMathReal angle,const C3Vector& axis)
 { // angle in radian!
     C3Vector axisTmp=axis;
     axisTmp.normalize();
-    simMathReal sinA=sin(angle/simTwo);
+    simMathReal sinA=sin(angle/2.0);
     data[1]=axisTmp(0)*sinA;
     data[2]=axisTmp(1)*sinA;
     data[3]=axisTmp(2)*sinA;
-    data[0]=cos(angle/simTwo);
+    data[0]=cos(angle/2.0);
 }
 
 void C4Vector::setVectorMapping(const C3Vector& startV,const C3Vector& endV)
@@ -99,7 +99,7 @@ void C4Vector::setVectorMapping(const C3Vector& startV,const C3Vector& endV)
     C3Vector v1(endV.getNormalized());
     C3Vector cross(v0^v1);
     simMathReal cosAngle=v0*v1;
-    if (cosAngle>simOne)
+    if (cosAngle>1.0)
         setIdentity();
     else
         setAngleAndAxis(CMath::robustAcos(cosAngle),cross);
@@ -109,16 +109,16 @@ C3Vector C4Vector::getAngleAndAxis(simMathReal& angle) const
 {
     C3Vector retV;
     C4Vector d(*this);
-    if (d(0)<simZero)
-        d=d*-simOne;
+    if (d(0)<0.0)
+        d=d*-1.0;
     simMathReal l=sqrt(d(0)*d(0)+d(1)*d(1)+d(2)*d(2)+d(3)*d(3));
     simMathReal cosA=d(0)/l; // Quaternion needs to be normalized
-    if (cosA>simOne) // Just make sure..
-        cosA=simOne;
-    angle=CMath::robustAcos(cosA)*simTwo;
-    simMathReal sinA=sqrt(simOne-cosA*cosA);
+    if (cosA>1.0) // Just make sure..
+        cosA=1.0;
+    angle=CMath::robustAcos(cosA)*2.0;
+    simMathReal sinA=sqrt(1.0-cosA*cosA);
     if (fabs(sinA)<simMathReal(0.00005))
-        sinA=simOne;
+        sinA=1.0;
     else
         sinA*=l; // Quaternion needs to be normalized
     retV(0)=d(1)/sinA;
@@ -143,15 +143,15 @@ C3Vector C4Vector::getEulerAngles() const
 simMathReal C4Vector::getAngleBetweenQuaternions(const C4Vector& q) const
 {
     simMathReal angle=fabs(data[0]*q(0)+data[1]*q(1)+data[2]*q(2)+data[3]*q(3));
-    return(CMath::robustAcos(angle)*simTwo);
+    return(CMath::robustAcos(angle)*2.0);
 }
 
 void C4Vector::buildInterpolation(const C4Vector& fromThis,const C4Vector& toThat,simMathReal t)
 {
     C4Vector AA(fromThis);
     C4Vector BB(toThat);
-    if (AA(0)*BB(0)+AA(1)*BB(1)+AA(2)*BB(2)+AA(3)*BB(3)<simZero)
-        AA=AA*-simOne;
+    if (AA(0)*BB(0)+AA(1)*BB(1)+AA(2)*BB(2)+AA(3)*BB(3)<0.0)
+        AA=AA*-1.0;
     C4Vector r((AA.getInverse()*BB).getAngleAndAxis());
     (*this)=(AA*C4Vector(r(0)*t,C3Vector(r(1),r(2),r(3))));
     // Already normalized through * operator
@@ -161,24 +161,24 @@ void C4Vector::buildInterpolation_otherWayRound(const C4Vector& fromThis,const C
 {
     C4Vector AA(fromThis);
     C4Vector BB(toThat);
-    if (AA(0)*BB(0)+AA(1)*BB(1)+AA(2)*BB(2)+AA(3)*BB(3)<simZero)
-        AA=AA*-simOne;
+    if (AA(0)*BB(0)+AA(1)*BB(1)+AA(2)*BB(2)+AA(3)*BB(3)<0.0)
+        AA=AA*-1.0;
     C4Vector r((AA.getInverse()*BB).getAngleAndAxis());
 
     // r(0) is the rotation angle
     // r(1),r(2),r(3) is the rotation axis
     // Here, since we want to rotate the other way round, we inverse the axis and rotate by 2*pi-r(0) instead:
-    (*this)=(AA*C4Vector((piValTimes2-r(0))*t,C3Vector(r(1)*-simOne,r(2)*-simOne,r(3)*-simOne)));
+    (*this)=(AA*C4Vector((piValT2-r(0))*t,C3Vector(r(1)*-1.0,r(2)*-1.0,r(3)*-1.0)));
     // Already normalized through * operator
 }
 
 void C4Vector::buildRandomOrientation()
 {
     C3Vector u(SIM_RAND_FLOAT,SIM_RAND_FLOAT,SIM_RAND_FLOAT);
-    data[0]=sqrt(simOne-u(0))*sin(piValTimes2*u(1));
-    data[1]=sqrt(simOne-u(0))*cos(piValTimes2*u(1));
-    data[2]=sqrt(u(0))*sin(piValTimes2*u(2));
-    data[3]=sqrt(u(0))*cos(piValTimes2*u(2));
+    data[0]=sqrt(1.0-u(0))*sin(piValT2*u(1));
+    data[1]=sqrt(1.0-u(0))*cos(piValT2*u(1));
+    data[2]=sqrt(u(0))*sin(piValT2*u(2));
+    data[3]=sqrt(u(0))*cos(piValT2*u(2));
 }
 
 void C4Vector::getData(simMathReal wxyz[4],bool xyzwLayout/*=false*/) const
@@ -238,18 +238,18 @@ void C4Vector::normalize()
 
 void C4Vector::clear()
 {
-    data[0]=simZero;
-    data[1]=simZero;
-    data[2]=simZero;
-    data[3]=simZero;
+    data[0]=0.0;
+    data[1]=0.0;
+    data[2]=0.0;
+    data[3]=0.0;
 }
 
 void C4Vector::setIdentity()
 {
-    data[0]=simOne;
-    data[1]=simZero;
-    data[2]=simZero;
-    data[3]=simZero;
+    data[0]=1.0;
+    data[1]=0.0;
+    data[2]=0.0;
+    data[3]=0.0;
 }
 
 C4Vector C4Vector::getInverse() const
@@ -317,7 +317,7 @@ C3Vector C4Vector::getAxis(size_t index) const
 
 C3Vector C4Vector::operator* (const C3Vector& v) const
 { // Rotation of a vector.
-    C4Vector tmpV(simOne,v(0),v(1),v(2));
+    C4Vector tmpV(1.0,v(0),v(1),v(2));
     tmpV=(*this)*(tmpV*getInverse());
     return(C3Vector(tmpV(1),tmpV(2),tmpV(3)));
 }
@@ -345,15 +345,15 @@ C3X3Matrix C4Vector::getMatrix() const
     simMathReal zz=data[3]*data[3];
     simMathReal zw=data[3]*data[0];
 
-    retM(0,0)=simOne-simTwo*(yy+zz);
-    retM(0,1)=simTwo*(xy-zw);
-    retM(0,2)=simTwo*(xz+yw);
-    retM(1,0)=simTwo*(xy+zw);
-    retM(1,1)=simOne-simTwo*(xx+zz);
-    retM(1,2)=simTwo*(yz-xw);
-    retM(2,0)=simTwo*(xz-yw);
-    retM(2,1)=simTwo*(yz+xw);
-    retM(2,2)=simOne-simTwo*(xx+yy);
+    retM(0,0)=1.0-2.0*(yy+zz);
+    retM(0,1)=2.0*(xy-zw);
+    retM(0,2)=2.0*(xz+yw);
+    retM(1,0)=2.0*(xy+zw);
+    retM(1,1)=1.0-2.0*(xx+zz);
+    retM(1,2)=2.0*(yz-xw);
+    retM(2,0)=2.0*(xz-yw);
+    retM(2,1)=2.0*(yz+xw);
+    retM(2,2)=1.0-2.0*(xx+yy);
     return(retM);
 }
 
@@ -386,25 +386,3 @@ void C4Vector::operator+= (const C4Vector& v)
     data[2]+=v(2);
     data[3]+=v(3);
 }
-
-/*
- * void C4Vector::get(simMathReal wxyz[4],bool xyzwLayout) const
-{ // Avoid using this. Use get/setData instead
-    getData(wxyz,xyzwLayout);
-}
-
-void C4Vector::set(const simMathReal wxyz[4],bool xyzwLayout)
-{ // Avoid using this. Use get/setData instead
-    setData(wxyz,xyzwLayout);
-}
-
-void C4Vector::getInternalData(simMathReal wxyz[4],bool xyzwLayout) const
-{ // Avoid using this. Use get/setData instead
-    getData(wxyz,xyzwLayout);
-}
-
-void C4Vector::setInternalData(const simMathReal wxyz[4],bool xyzwLayout)
-{ // Avoid using this. Use get/setData instead
-    setData(wxyz,xyzwLayout);
-}
-*/

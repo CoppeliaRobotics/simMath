@@ -33,14 +33,6 @@ public:
     C3Vector getEulerAngles() const;
     void getData(simMathReal wxyz[4],bool xyzwLayout=false) const;
     void setData(const simMathReal wxyz[4],bool xyzwLayout=false);
-    // Avoid using these:
-    /*
-    void get(simMathReal wxyz[4],bool xyzwLayout=false) const;
-    void set(const simMathReal wxyz[4],bool xyzwLayout=false);
-    void getInternalData(simMathReal wxyz[4],bool xyzwLayout=false) const;
-    void setInternalData(const simMathReal wxyz[4],bool xyzwLayout=false);
-    */
-    //-----------------
     void normalize();
     void clear();
     void setIdentity();

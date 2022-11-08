@@ -22,18 +22,10 @@ public:
     simMathReal* ptr();
     bool isColinear(const C3Vector& v,simMathReal precision) const;
     simMathReal getLength() const;
-    void setData(const simMathReal v[3]);
+    void setData(const floatFloat v[3]);
+    void setData(const double v[3]);
     void getData(simMathReal v[3]) const;
     void setData(simMathReal v0,simMathReal v1,simMathReal v2);
-    // avoid those:
-    /*
-    void set(const simMathReal v[3]);
-    void get(simMathReal v[3]) const;
-    void getInternalData(simMathReal d[3]) const;
-    void setInternalData(const simMathReal d[3]);
-    void copyTo(simMathReal v[3]) const;
-    */
-    // -----------
     C3Vector getNormalized() const;
     void keepMax(const C3Vector& v);
     void keepMin(const C3Vector& v);
@@ -62,6 +54,7 @@ public:
     C3Vector operator- (const C3Vector& v) const;
     C3Vector operator^ (const C3Vector& v) const;
 
+    static C3Vector fromFloatPtr(const floatFloat* f);
     static const C3Vector unitXVector;
     static const C3Vector unitYVector;
     static const C3Vector unitZVector;

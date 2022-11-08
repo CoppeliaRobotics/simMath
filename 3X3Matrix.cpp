@@ -61,13 +61,13 @@ C3Vector C3X3Matrix::getEulerAngles() const
 { // Angles are in radians!! // THERE IS ANOTHER SUCH ROUTINE IN C4X4MATRIX
     C3Vector retV;
     simMathReal m02=axis[2](0);
-    if (m02>simOne)
-        m02=simOne;   // Just in case
-    if (m02<-simOne)
-        m02=-simOne;  // Just in case
+    if (m02>1.0)
+        m02=1.0;   // Just in case
+    if (m02<-1.0)
+        m02=-1.0;  // Just in case
     
     retV(1)=CMath::robustAsin(m02);
-    if (m02<simZero)
+    if (m02<0.0)
         m02=-m02;
     if (m02<simMathReal(0.999995))
     {   // No gimbal lock
@@ -76,7 +76,7 @@ C3Vector C3X3Matrix::getEulerAngles() const
     }
     else
     {   // Gimbal lock has occured
-        retV(0)=simZero;
+        retV(0)=0.0;
         retV(2)=atan2(axis[0](1),axis[1](1));
     }
     return(retV);
@@ -86,9 +86,9 @@ C4Vector C3X3Matrix::getQuaternion() const
 {   
     C4Vector retV;
     simMathReal trace=axis[0](0)+axis[1](1)+axis[2](2);
-    if (trace>=simZero)    // trace>0.00000001)
+    if (trace>=0.0)    // trace>0.00000001)
     {
-        simMathReal s=sqrt(trace+simOne)*simTwo;
+        simMathReal s=sqrt(trace+1.0)*2.0;
         retV(1)=(axis[1](2)-axis[2](1))/s;
         retV(2)=(axis[2](0)-axis[0](2))/s;
         retV(3)=(axis[0](1)-axis[1](0))/s;
@@ -98,7 +98,7 @@ C4Vector C3X3Matrix::getQuaternion() const
     {
         if ((axis[0](0)>=axis[1](1))&&(axis[0](0)>=axis[2](2)))
         {
-            simMathReal s=sqrt(simOne+axis[0](0)-axis[1](1)-axis[2](2))*simTwo;
+            simMathReal s=sqrt(1.0+axis[0](0)-axis[1](1)-axis[2](2))*2.0;
             retV(1)=simMathReal(0.25)*s;
             retV(2)=(axis[0](1)+axis[1](0))/s;
             retV(3)=(axis[2](0)+axis[0](2))/s;
@@ -108,7 +108,7 @@ C4Vector C3X3Matrix::getQuaternion() const
         {
             if ((axis[1](1)>=axis[0](0))&&(axis[1](1)>=axis[2](2)))
             {
-                simMathReal s=sqrt(simOne+axis[1](1)-axis[0](0)-axis[2](2))*simTwo;
+                simMathReal s=sqrt(1.0+axis[1](1)-axis[0](0)-axis[2](2))*2.0;
                 retV(1)=(axis[0](1)+axis[1](0))/s;
                 retV(2)=simMathReal(0.25)*s;
                 retV(3)=(axis[1](2)+axis[2](1))/s;
@@ -116,7 +116,7 @@ C4Vector C3X3Matrix::getQuaternion() const
             }
             else
             {
-                simMathReal s=sqrt(simOne+axis[2](2)-axis[0](0)-axis[1](1))*simTwo;
+                simMathReal s=sqrt(1.0+axis[2](2)-axis[0](0)-axis[1](1))*2.0;
                 retV(1)=(axis[2](0)+axis[0](2))/s;
                 retV(2)=(axis[1](2)+axis[2](1))/s;
                 retV(3)=simMathReal(0.25)*s;
@@ -139,13 +139,13 @@ void C3X3Matrix::buildXRotation(simMathReal angle)
 {
     simMathReal c=cos(angle);
     simMathReal s=sin(angle);
-    axis[0](0)=simOne;
-    axis[1](0)=simZero;
-    axis[2](0)=simZero;
-    axis[0](1)=simZero;
+    axis[0](0)=1.0;
+    axis[1](0)=0.0;
+    axis[2](0)=0.0;
+    axis[0](1)=0.0;
     axis[1](1)=c;
     axis[2](1)=-s;
-    axis[0](2)=simZero;
+    axis[0](2)=0.0;
     axis[1](2)=s;
     axis[2](2)=c;
 }
@@ -155,13 +155,13 @@ void C3X3Matrix::buildYRotation(simMathReal angle)
     simMathReal c=cos(angle);
     simMathReal s=sin(angle);
     axis[0](0)=c;
-    axis[1](0)=simZero;
+    axis[1](0)=0.0;
     axis[2](0)=s;
-    axis[0](1)=simZero;
-    axis[1](1)=simOne;
-    axis[2](1)=simZero;
+    axis[0](1)=0.0;
+    axis[1](1)=1.0;
+    axis[2](1)=0.0;
     axis[0](2)=-s;
-    axis[1](2)=simZero;
+    axis[1](2)=0.0;
     axis[2](2)=c;
 }
 
@@ -171,13 +171,13 @@ void C3X3Matrix::buildZRotation(simMathReal angle)
     simMathReal s=sin(angle);
     axis[0](0)=c;
     axis[1](0)=-s;
-    axis[2](0)=simZero;
+    axis[2](0)=0.0;
     axis[0](1)=s;
     axis[1](1)=c;
-    axis[2](1)=simZero;
-    axis[0](2)=simZero;
-    axis[1](2)=simZero;
-    axis[2](2)=simOne;
+    axis[2](1)=0.0;
+    axis[0](2)=0.0;
+    axis[1](2)=0.0;
+    axis[2](2)=1.0;
 }
 
 C3Vector C3X3Matrix::getNormalVector() const
@@ -199,28 +199,28 @@ const simMathReal& C3X3Matrix::operator() (size_t i,size_t j) const
 
 void C3X3Matrix::clear()
 {
-    axis[0](0)=simZero;
-    axis[0](1)=simZero;
-    axis[0](2)=simZero;
-    axis[1](0)=simZero;
-    axis[1](1)=simZero;
-    axis[1](2)=simZero;
-    axis[2](0)=simZero;
-    axis[2](1)=simZero;
-    axis[2](2)=simZero;
+    axis[0](0)=0.0;
+    axis[0](1)=0.0;
+    axis[0](2)=0.0;
+    axis[1](0)=0.0;
+    axis[1](1)=0.0;
+    axis[1](2)=0.0;
+    axis[2](0)=0.0;
+    axis[2](1)=0.0;
+    axis[2](2)=0.0;
 }
 
 void C3X3Matrix::setIdentity()
 {
-    axis[0](0)=simOne;
-    axis[0](1)=simZero;
-    axis[0](2)=simZero;
-    axis[1](0)=simZero;
-    axis[1](1)=simOne;
-    axis[1](2)=simZero;
-    axis[2](0)=simZero;
-    axis[2](1)=simZero;
-    axis[2](2)=simOne;
+    axis[0](0)=1.0;
+    axis[0](1)=0.0;
+    axis[0](2)=0.0;
+    axis[1](0)=0.0;
+    axis[1](1)=1.0;
+    axis[1](2)=0.0;
+    axis[2](0)=0.0;
+    axis[2](1)=0.0;
+    axis[2](2)=1.0;
 }
 
 void C3X3Matrix::transpose()
@@ -449,80 +449,3 @@ void C3X3Matrix::setAxes(const C3Vector& xAxis,const C3Vector& yAxis,const C3Vec
     axis[1]=yAxis;
     axis[2]=zAxis;
 }
-
-/*
-void C3X3Matrix::get(simMathReal d[9]) const
-{ // Avoid using this. Use get/setData instead
-    axis[0].getInternalData(d+0);
-    axis[1].getInternalData(d+3);
-    axis[2].getInternalData(d+6);
-}
-
-void C3X3Matrix::set(const simMathReal d[9])
-{ // Avoid using this. Use get/setData instead
-    axis[0].setInternalData(d+0);
-    axis[1].setInternalData(d+3);
-    axis[2].setInternalData(d+6);
-}
-
-void C3X3Matrix::getInternalData(simMathReal d[9]) const
-{ // Avoid using this. Use get/setData instead
-    get(d);
-}
-
-void C3X3Matrix::setInternalData(const simMathReal d[9])
-{ // Avoid using this. Use get/setData instead
-    set(d);
-}
-
-void C3X3Matrix::set(const C3Vector& xAxis,const C3Vector& yAxis,const C3Vector& zAxis)
-{ // Avoid using this. Use get/setData instead
-    setAxes(xAxis,yAxis,zAxis);
-}
-
-void C3X3Matrix::set(const simMathReal m[3][3])
-{ // Avoid using this. Use get/setData instead
-    axis[0](0)=m[0][0];
-    axis[0](1)=m[1][0];
-    axis[0](2)=m[2][0];
-    axis[1](0)=m[0][1];
-    axis[1](1)=m[1][1];
-    axis[1](2)=m[2][1];
-    axis[2](0)=m[0][2];
-    axis[2](1)=m[1][2];
-    axis[2](2)=m[2][2];
-}
-
-void C3X3Matrix::copyTo(simMathReal m[3][3]) const
-{ // Avoid using this. Use get/setData instead
-    m[0][0]=axis[0](0);
-    m[1][0]=axis[0](1);
-    m[2][0]=axis[0](2);
-    m[0][1]=axis[1](0);
-    m[1][1]=axis[1](1);
-    m[2][1]=axis[1](2);
-    m[0][2]=axis[2](0);
-    m[1][2]=axis[2](1);
-    m[2][2]=axis[2](2);
-}
-
-void C3X3Matrix::copyToInterface(simMathReal* m) const
-{ // Avoid using this. Use get/setData instead
-    for (size_t i=0;i<3;i++)
-    {
-        m[3*i+0]=axis[0](i);
-        m[3*i+1]=axis[1](i);
-        m[3*i+2]=axis[2](i);
-    }
-}
-
-void C3X3Matrix::copyFromInterface(const simMathReal* m)
-{ // Avoid using this. Use get/setData instead
-    for (size_t i=0;i<3;i++)
-    {
-        axis[0](i)=m[3*i+0];
-        axis[1](i)=m[3*i+1];
-        axis[2](i)=m[3*i+2];
-    }
-}
-*/

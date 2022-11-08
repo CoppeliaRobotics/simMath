@@ -27,10 +27,10 @@ void CMath::limitValue(int minValue,int maxValue,int &value)
 simMathReal CMath::robustAsin(simMathReal v)
 {
     if (!isRealNumberOk(v))
-        return(simZero);
-    if (v>=simOne)
+        return(0.0);
+    if (v>=1.0)
         return(piValD2);
-    if (v<=-simOne)
+    if (v<=-1.0)
         return(-piValD2);
     return(asin(v));
 }
@@ -38,10 +38,10 @@ simMathReal CMath::robustAsin(simMathReal v)
 simMathReal CMath::robustAcos(simMathReal v)
 {
     if (!isRealNumberOk(v))
-        return(simZero);
-    if (v>=simOne)
-        return(simZero);
-    if (v<=-simOne)
+        return(0.0);
+    if (v>=1.0)
+        return(0.0);
+    if (v<=-1.0)
         return(piValue);
     return(acos(v));
 }
@@ -49,9 +49,9 @@ simMathReal CMath::robustAcos(simMathReal v)
 simMathReal CMath::robustFmod(simMathReal v,simMathReal w)
 {
     if ( (!isRealNumberOk(v))||(!isRealNumberOk(w)) )
-        return(simZero);
-    if (w==simZero)
-        return(simZero);
+        return(0.0);
+    if (w==0.0)
+        return(0.0);
     return(fmod(v,w));
 }
 

@@ -72,7 +72,7 @@ void CMatrix::set(const CMatrix& m)
 void CMatrix::clear()
 {
     for (size_t i=0;i<(cols*rows);i++)
-        data[i]=simZero;
+        data[i]=0.0;
 }
 
 void CMatrix::setIdentity()
@@ -82,9 +82,9 @@ void CMatrix::setIdentity()
         for (size_t j=0;j<cols;j++)
         {
             if (i!=j)
-                (*this)(i,j)=simZero;
+                (*this)(i,j)=0.0;
             else
-                (*this)(i,j)=simOne;
+                (*this)(i,j)=1.0;
         }
     }
 }
@@ -96,7 +96,7 @@ CMatrix CMatrix::operator* (const C3X3Matrix& m) const
     {
         for (size_t j=0;j<3;j++)
         {
-            retM(i,j)=simZero;
+            retM(i,j)=0.0;
             for (size_t k=0;k<3;k++)
                 retM(i,j)+=( (*this)(i,k)*m.axis[j](k) );
         }
@@ -111,7 +111,7 @@ CMatrix CMatrix::operator* (const C4X4Matrix& m) const
     {
         for (size_t j=0;j<3;j++)
         {
-            retM(i,j)=simZero;
+            retM(i,j)=0.0;
             for (size_t k=0;k<3;k++)
                 retM(i,j)+=( (*this)(i,k)*m.M.axis[j](k) );
         }
@@ -129,7 +129,7 @@ CMatrix CMatrix::operator* (const CMatrix& m) const
     {
         for (size_t j=0;j<m.cols;j++)
         {
-            retM(i,j)=simZero;
+            retM(i,j)=0.0;
             for (size_t k=0;k<cols;k++)
                 retM(i,j)+=( (*this)(i,k)*m(k,j) );
         }
@@ -217,10 +217,10 @@ CMatrix& CMatrix::operator= (const C4X4Matrix& m)
             (*this)(i,j)=m.M.axis[j](i);
         (*this)(i,3)=m.X(i);
     }
-    (*this)(3,0)=simZero;
-    (*this)(3,1)=simZero;
-    (*this)(3,2)=simZero;
-    (*this)(3,3)=simOne;
+    (*this)(3,0)=0.0;
+    (*this)(3,1)=0.0;
+    (*this)(3,2)=0.0;
+    (*this)(3,3)=1.0;
     return(*this);
 }
 
@@ -263,7 +263,7 @@ bool CMatrix::inverse()
     {
         size_t icol=0;
         bool icolSet=false;
-        big=simZero;
+        big=0.0;
         for (size_t j=1;j<=rows;j++)
         {
             if (ipiv[j]!=1)
@@ -310,15 +310,15 @@ bool CMatrix::inverse()
         }
         indxr[i]=irow;
         indxc[i]=icol;
-        if ((*this)(icol-1,icol-1)==simZero)
+        if ((*this)(icol-1,icol-1)==0.0)
         {   // The system cannot be solved
             delete[] ipiv;
             delete[] indxr;
             delete[] indxc;
             return(false);
         }
-        pivinv=simOne/(*this)(icol-1,icol-1);
-        (*this)(icol-1,icol-1)=simOne;
+        pivinv=1.0/(*this)(icol-1,icol-1);
+        (*this)(icol-1,icol-1)=1.0;
         for (size_t l=1;l<=rows;l++)
             (*this)(icol-1,l-1)*=pivinv;
         for (size_t ll=1;ll<=rows;ll++)
@@ -326,7 +326,7 @@ bool CMatrix::inverse()
             if (ll!=size_t(icol))
             {
                 dum=(*this)(ll-1,size_t(icol-1));
-                (*this)(ll-1,size_t(icol-1))=simZero;
+                (*this)(ll-1,size_t(icol-1))=0.0;
                 for (size_t l=1;l<=rows;l++)
                     (*this)(ll-1,l-1)-=(*this)(size_t(icol-1),l-1)*dum;
             }
