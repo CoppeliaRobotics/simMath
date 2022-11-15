@@ -9,11 +9,6 @@ const C3Vector C3Vector::unitYVector(0.0,1.0,0.0);
 const C3Vector C3Vector::unitZVector(0.0,0.0,1.0);
 const C3Vector C3Vector::zeroVector(0.0,0.0,0.0);
 
-C3Vector C3Vector::fromFloatPtr(const floatFloat* f)
-{
-    return(C3Vector((simMathReal)f[0],(simMathReal)f[1],(simMathReal)f[2]));
-}
-
 C3Vector::C3Vector()
 {
 }

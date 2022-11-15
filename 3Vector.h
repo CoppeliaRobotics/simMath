@@ -54,7 +54,6 @@ public:
     C3Vector operator- (const C3Vector& v) const;
     C3Vector operator^ (const C3Vector& v) const;
 
-    static C3Vector fromFloatPtr(const floatFloat* f);
     static const C3Vector unitXVector;
     static const C3Vector unitYVector;
     static const C3Vector unitZVector;
