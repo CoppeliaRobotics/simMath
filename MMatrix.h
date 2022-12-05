@@ -15,21 +15,21 @@ public:
     CMatrix(const CMatrix& m);
     ~CMatrix();
 
-    void resize(size_t nRows,size_t nCols,simMathReal def);
+    void resize(size_t nRows,size_t nCols,simReal def);
     void set(const CMatrix& m);
     bool inverse();
     void transpose();
     void clear();
     void setIdentity();
-    simMathReal getAt(size_t row,size_t col) const;
-    void setAt(size_t row,size_t col,simMathReal value);
+    simReal getAt(size_t row,size_t col) const;
+    void setAt(size_t row,size_t col,simReal value);
 
-    simMathReal& operator() (size_t row,size_t col);
-    const simMathReal& operator() (size_t row,size_t col) const;
+    simReal& operator() (size_t row,size_t col);
+    const simReal& operator() (size_t row,size_t col) const;
 
     void operator*= (const CMatrix& m);
-    void operator*= (simMathReal d);
-    void operator/= (simMathReal d);
+    void operator*= (simReal d);
+    void operator/= (simReal d);
     void operator+= (const CMatrix& m);
     void operator-= (const CMatrix& m);
 
@@ -39,13 +39,13 @@ public:
     CMatrix operator* (const C3X3Matrix& m) const;
     CMatrix operator* (const C4X4Matrix& m) const;
     CMatrix operator* (const CMatrix& m) const;
-    CMatrix operator* (simMathReal d) const;
-    CMatrix operator/ (simMathReal d) const;
+    CMatrix operator* (simReal d) const;
+    CMatrix operator/ (simReal d) const;
     CMatrix operator+ (const CMatrix& m) const;
     CMatrix operator- (const CMatrix& m) const;
 
     size_t rows,cols;
-    std::vector<simMathReal> data;
+    std::vector<simReal> data;
 };
 
 

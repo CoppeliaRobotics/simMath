@@ -15,22 +15,22 @@ public:
     C7Vector(const C3Vector& x);
     C7Vector(const C4Vector& q,const C3Vector& x);
     C7Vector(const C4X4Matrix& m);
-    C7Vector(simMathReal angle,const C3Vector& pos,const C3Vector& dir);
+    C7Vector(simReal angle,const C3Vector& pos,const C3Vector& dir);
     ~C7Vector();
 
     void setIdentity();
     C4X4Matrix getMatrix() const;
     C7Vector getInverse() const;
     void setMultResult(const C7Vector& v1,const C7Vector& v2);
-    void buildInterpolation(const C7Vector& fromThis,const C7Vector& toThat,simMathReal t);
+    void buildInterpolation(const C7Vector& fromThis,const C7Vector& toThat,simReal t);
     void inverse();
     C3Vector getAxis(size_t index) const;
-    void getData(simMathReal d[7],bool xyzwLayout=false) const;
-    void setData(const simMathReal d[7],bool xyzwLayout=false);
+    void getData(simReal d[7],bool xyzwLayout=false) const;
+    void setData(const simReal d[7],bool xyzwLayout=false);
     void setFromMatrix(const C4X4Matrix& m);
 
-    simMathReal& operator() (size_t i);
-    const simMathReal& operator() (size_t i) const;
+    simReal& operator() (size_t i);
+    const simReal& operator() (size_t i) const;
 
     void operator*= (const C7Vector& v);
 

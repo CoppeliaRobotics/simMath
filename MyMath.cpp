@@ -8,25 +8,9 @@ CMath::~CMath()
 {
 }
 
-void CMath::limitValue(simMathReal minValue,simMathReal maxValue,simMathReal &value)
+simReal CMath::robustAsin(simReal v)
 {
-    if (value>maxValue)
-        value=maxValue;
-    if (value<minValue) 
-        value=minValue;
-}
-
-void CMath::limitValue(int minValue,int maxValue,int &value)
-{
-    if (value>maxValue) 
-        value=maxValue;
-    if (value<minValue) 
-        value=minValue;
-}
-
-simMathReal CMath::robustAsin(simMathReal v)
-{
-    if (!isRealNumberOk(v))
+    if (!isNumberOk(v))
         return(0.0);
     if (v>=1.0)
         return(piValD2);
@@ -35,9 +19,9 @@ simMathReal CMath::robustAsin(simMathReal v)
     return(asin(v));
 }
 
-simMathReal CMath::robustAcos(simMathReal v)
+simReal CMath::robustAcos(simReal v)
 {
-    if (!isRealNumberOk(v))
+    if (!isNumberOk(v))
         return(0.0);
     if (v>=1.0)
         return(0.0);
@@ -46,39 +30,16 @@ simMathReal CMath::robustAcos(simMathReal v)
     return(acos(v));
 }
 
-simMathReal CMath::robustFmod(simMathReal v,simMathReal w)
+simReal CMath::robustMod(simReal v,simReal w)
 {
-    if ( (!isRealNumberOk(v))||(!isRealNumberOk(w)) )
+    if ( (!isNumberOk(v))||(!isNumberOk(w)) )
         return(0.0);
     if (w==0.0)
         return(0.0);
     return(fmod(v,w));
 }
 
-double CMath::robustmod(double v,double w)
+bool CMath::isNumberOk(simReal v)
 {
-    if ( (!isDoubleNumberOk(v))||(!isDoubleNumberOk(w)) )
-        return(0.0);
-    if (w==0.0)
-        return(0.0);
-    return(fmod(v,w));
-}
-
-bool CMath::isRealNumberOk(simMathReal v)
-{
-#ifdef SIM_MATH_DOUBLE
-    return(isDoubleNumberOk(v));
-#else
-    return(isFloatNumberOk(v));
-#endif
-}
-
-bool CMath::isFloatNumberOk(float v)
-{
-    return ( (!SIM_IS_NAN(v))&&(fabs(v)!=std::numeric_limits<float>::infinity()) );    
-}
-
-bool CMath::isDoubleNumberOk(double v)
-{
-    return ( (!SIM_IS_NAN(v))&&(fabs(v)!=std::numeric_limits<double>::infinity()) );   
+    return ( (!SIM_IS_NAN(v))&&(fabs(v)!=std::numeric_limits<simReal>::infinity()) );
 }

@@ -11,21 +11,21 @@ class C3Vector
 public:
 
     C3Vector();
-    C3Vector(simMathReal v0,simMathReal v1,simMathReal v2);
-    C3Vector(const simMathReal v[3]);
+    C3Vector(simReal v0,simReal v1,simReal v2);
+    C3Vector(const simReal v[3]);
     C3Vector(const C3Vector& v);
     ~C3Vector();
 
-    void buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,simMathReal t);
-    simMathReal getAngle(const C3Vector& v) const;
+    void buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,simReal t);
+    simReal getAngle(const C3Vector& v) const;
     C3X3Matrix getProductWithStar() const;
-    simMathReal* ptr();
-    bool isColinear(const C3Vector& v,simMathReal precision) const;
-    simMathReal getLength() const;
-    void setData(const floatFloat v[3]);
+    simReal* ptr();
+    bool isColinear(const C3Vector& v,simReal precision) const;
+    simReal getLength() const;
+    void setData(const float v[3]);
     void setData(const double v[3]);
-    void getData(simMathReal v[3]) const;
-    void setData(simMathReal v0,simMathReal v1,simMathReal v2);
+    void getData(simReal v[3]) const;
+    void setData(simReal v0,simReal v1,simReal v2);
     C3Vector getNormalized() const;
     void keepMax(const C3Vector& v);
     void keepMin(const C3Vector& v);
@@ -33,23 +33,23 @@ public:
     void normalize();
     void clear();
 
-    simMathReal& operator() (size_t i);
-    const simMathReal& operator() (size_t i) const;
+    simReal& operator() (size_t i);
+    const simReal& operator() (size_t i) const;
 
     void operator*= (const C4X4Matrix& m);
     void operator*= (const C3X3Matrix& m);
     void operator*= (const C7Vector& transf);
-    void operator*= (simMathReal d);
-    void operator/= (simMathReal d);
+    void operator*= (simReal d);
+    void operator/= (simReal d);
     void operator+= (const C3Vector& v);
     void operator-= (const C3Vector& v);
     void operator^= (const C3Vector& v);
 
     C3Vector& operator= (const C3Vector& v);
     bool operator!= (const C3Vector& v);
-    C3Vector operator* (simMathReal d) const;
-    simMathReal operator* (const C3Vector& v) const;
-    C3Vector operator/ (simMathReal d) const;
+    C3Vector operator* (simReal d) const;
+    simReal operator* (const C3Vector& v) const;
+    C3Vector operator/ (simReal d) const;
     C3Vector operator+ (const C3Vector& v) const;
     C3Vector operator- (const C3Vector& v) const;
     C3Vector operator^ (const C3Vector& v) const;
@@ -59,7 +59,7 @@ public:
     static const C3Vector unitZVector;
     static const C3Vector zeroVector;
 
-    simMathReal data[3];
+    simReal data[3];
 };
 
 

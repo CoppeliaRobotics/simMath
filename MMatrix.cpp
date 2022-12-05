@@ -41,7 +41,7 @@ CMatrix::~CMatrix()
 {
 }
 
-void CMatrix::resize(size_t nRows,size_t nCols,simMathReal def)
+void CMatrix::resize(size_t nRows,size_t nCols,simReal def)
 { // old data is kept
     CMatrix a(nRows,nCols);
     for (size_t i=0;i<nRows*nCols;i++)
@@ -153,7 +153,7 @@ CMatrix CMatrix::operator- (const CMatrix& m) const
     return(retM);
 }
 
-CMatrix CMatrix::operator* (simMathReal d) const
+CMatrix CMatrix::operator* (simReal d) const
 {
     CMatrix retM(rows,cols);
     for (size_t i=0;i<(rows*cols);i++)
@@ -161,7 +161,7 @@ CMatrix CMatrix::operator* (simMathReal d) const
     return(retM);
 }
 
-CMatrix CMatrix::operator/ (simMathReal d) const
+CMatrix CMatrix::operator/ (simReal d) const
 {
     CMatrix retM(rows,cols);
     for (size_t i=0;i<(rows*cols);i++)
@@ -186,13 +186,13 @@ void CMatrix::operator-= (const CMatrix& m)
         data[i]-=m.data[i];
 }
 
-void CMatrix::operator*= (simMathReal d)
+void CMatrix::operator*= (simReal d)
 {
     for (size_t i=0;i<(rows*cols);i++)
         data[i]*=d;
 }
 
-void CMatrix::operator/= (simMathReal d)
+void CMatrix::operator/= (simReal d)
 {
     for (size_t i=0;i<(rows*cols);i++)
         data[i]/=d;
@@ -253,7 +253,7 @@ bool CMatrix::inverse()
 // Found the following routine on internet (numerical recipes) and modified it.
 // Linear equation solution by Gauss-Jordan elimination:
     size_t irow=0;
-    simMathReal big,dum,pivinv;
+    simReal big,dum,pivinv;
     size_t* indxc=new size_t[rows+1];
     size_t* indxr=new size_t[rows+1];
     size_t* ipiv=new size_t[rows+1];
@@ -303,7 +303,7 @@ bool CMatrix::inverse()
         {
             for (size_t l=1;l<=rows;l++)
             {
-                simMathReal tmp=(*this)(irow-1,l-1);
+                simReal tmp=(*this)(irow-1,l-1);
                 (*this)(irow-1,l-1)=(*this)(icol-1,l-1);
                 (*this)(icol-1,l-1)=tmp;
             }
@@ -339,7 +339,7 @@ bool CMatrix::inverse()
         {
             for (size_t k=1;k<=rows;k++)
             {
-                simMathReal tmp=(*this)(k-1,indxr[l]-1);
+                simReal tmp=(*this)(k-1,indxr[l]-1);
                 (*this)(k-1,indxr[l]-1)=(*this)(k-1,indxc[l]-1);
                 (*this)(k-1,indxc[l]-1)=tmp;
             }
@@ -351,22 +351,22 @@ bool CMatrix::inverse()
     return(true);
 }
 
-simMathReal& CMatrix::operator() (size_t row,size_t col)
+simReal& CMatrix::operator() (size_t row,size_t col)
 {
     return(data[row*cols+col]);
 }
 
-simMathReal CMatrix::getAt(size_t row,size_t col) const
+simReal CMatrix::getAt(size_t row,size_t col) const
 {
     return(data[row*cols+col]);
 }
 
-void CMatrix::setAt(size_t row,size_t col,simMathReal value)
+void CMatrix::setAt(size_t row,size_t col,simReal value)
 {
     data[row*cols+col]=value;
 }
 
-const simMathReal& CMatrix::operator() (size_t row,size_t col) const
+const simReal& CMatrix::operator() (size_t row,size_t col) const
 {
     return(data[row*cols+col]);
 }

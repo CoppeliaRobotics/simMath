@@ -72,14 +72,14 @@ C7Vector C4X4Matrix::getTransformation() const
 }
 
 
-void C4X4Matrix::buildInterpolation(const C4X4Matrix& fromThis,const C4X4Matrix& toThat,simMathReal t)
+void C4X4Matrix::buildInterpolation(const C4X4Matrix& fromThis,const C4X4Matrix& toThat,simReal t)
 {   // Builds the interpolation (based on t) from 'fromThis' to 'toThat'
     C7Vector out;
     out.buildInterpolation(fromThis.getTransformation(),toThat.getTransformation(),t);
     (*this)=out;
 }
 
-void C4X4Matrix::rotateAroundX(simMathReal angle)
+void C4X4Matrix::rotateAroundX(simReal angle)
 {
     C4X4Matrix rot;
     rot.setIdentity();
@@ -87,7 +87,7 @@ void C4X4Matrix::rotateAroundX(simMathReal angle)
     (*this)=rot*(*this);
 }
 
-void C4X4Matrix::rotateAroundY(simMathReal angle)
+void C4X4Matrix::rotateAroundY(simReal angle)
 {
     C4X4Matrix rot;
     rot.setIdentity();
@@ -95,7 +95,7 @@ void C4X4Matrix::rotateAroundY(simMathReal angle)
     (*this)=rot*(*this);
 }
 
-void C4X4Matrix::rotateAroundZ(simMathReal angle)
+void C4X4Matrix::rotateAroundZ(simReal angle)
 {
     C4X4Matrix rot;
     rot.setIdentity();
@@ -103,25 +103,25 @@ void C4X4Matrix::rotateAroundZ(simMathReal angle)
     (*this)=rot*(*this);
 }
 
-void C4X4Matrix::buildXRotation(simMathReal angle)
+void C4X4Matrix::buildXRotation(simReal angle)
 {
     setIdentity();
     M.buildXRotation(angle);
 }
 
-void C4X4Matrix::buildYRotation(simMathReal angle)
+void C4X4Matrix::buildYRotation(simReal angle)
 {
     setIdentity();
     M.buildYRotation(angle);
 }
 
-void C4X4Matrix::buildZRotation(simMathReal angle)
+void C4X4Matrix::buildZRotation(simReal angle)
 {
     setIdentity();
     M.buildZRotation(angle);
 }
 
-void C4X4Matrix::buildTranslation(simMathReal x,simMathReal y,simMathReal z)
+void C4X4Matrix::buildTranslation(simReal x,simReal y,simReal z)
 {
     setIdentity();
     X(0)=x;
@@ -129,7 +129,7 @@ void C4X4Matrix::buildTranslation(simMathReal x,simMathReal y,simMathReal z)
     X(2)=z;
 }
 
-void C4X4Matrix::translate(simMathReal x,simMathReal y,simMathReal z)
+void C4X4Matrix::translate(simReal x,simReal y,simReal z)
 {
     X(0)+=x;
     X(1)+=y;
@@ -139,7 +139,7 @@ void C4X4Matrix::translate(simMathReal x,simMathReal y,simMathReal z)
 void C4X4Matrix::inverse()
 {
     // Speed optimized version:
-    simMathReal tmp=M.axis[0](1);
+    simReal tmp=M.axis[0](1);
     M.axis[0](1)=M.axis[1](0);
     M.axis[1](0)=tmp;;
     tmp=M.axis[0](2);
@@ -148,14 +148,14 @@ void C4X4Matrix::inverse()
     tmp=M.axis[1](2);
     M.axis[1](2)=M.axis[2](1);
     M.axis[2](1)=tmp;;
-    simMathReal v[3]={-X(0),-X(1),-X(2)};
+    simReal v[3]={-X(0),-X(1),-X(2)};
     X(0)=M.axis[0](0)*v[0]+M.axis[1](0)*v[1]+M.axis[2](0)*v[2];
     X(1)=M.axis[0](1)*v[0]+M.axis[1](1)*v[1]+M.axis[2](1)*v[2];
     X(2)=M.axis[0](2)*v[0]+M.axis[1](2)*v[1]+M.axis[2](2)*v[2];
     // Normal version:
     //  (*this)=getInverse();
 }
-void C4X4Matrix::getData(simMathReal* m) const
+void C4X4Matrix::getData(simReal* m) const
 {
     for (size_t i=0;i<3;i++)
     {
@@ -166,7 +166,7 @@ void C4X4Matrix::getData(simMathReal* m) const
     }
 }
 
-void C4X4Matrix::setData(const simMathReal* m)
+void C4X4Matrix::setData(const simReal* m)
 {
     for (size_t i=0;i<3;i++)
     {

@@ -13,14 +13,14 @@ C3Vector::C3Vector()
 {
 }
 
-C3Vector::C3Vector(simMathReal v0,simMathReal v1,simMathReal v2)
+C3Vector::C3Vector(simReal v0,simReal v1,simReal v2)
 {
     data[0]=v0;
     data[1]=v1;
     data[2]=v2;
 }
 
-C3Vector::C3Vector(const simMathReal v[3])
+C3Vector::C3Vector(const simReal v[3])
 {
     data[0]=v[0];
     data[1]=v[1];
@@ -36,7 +36,7 @@ C3Vector::~C3Vector()
 {
 }
 
-simMathReal C3Vector::getAngle(const C3Vector& v) const
+simReal C3Vector::getAngle(const C3Vector& v) const
 { // Return value is in radian!!
     C3Vector a(getNormalized());
     C3Vector b(v.getNormalized());
@@ -62,9 +62,9 @@ C3X3Matrix C3Vector::getProductWithStar() const
 void C3Vector::operator*= (const C4X4Matrix& m)
 {
 //  (*this)=m*(*this);
-    simMathReal x=data[0];
-    simMathReal y=data[1];
-    simMathReal z=data[2];
+    simReal x=data[0];
+    simReal y=data[1];
+    simReal z=data[2];
     data[0]=m.M.axis[0].data[0]*x+m.M.axis[1].data[0]*y+m.M.axis[2].data[0]*z+m.X.data[0];
     data[1]=m.M.axis[0].data[1]*x+m.M.axis[1].data[1]*y+m.M.axis[2].data[1]*z+m.X.data[1];
     data[2]=m.M.axis[0].data[2]*x+m.M.axis[1].data[2]*y+m.M.axis[2].data[2]*z+m.X.data[2];
@@ -72,9 +72,9 @@ void C3Vector::operator*= (const C4X4Matrix& m)
 void C3Vector::operator*= (const C3X3Matrix& m)
 {
 //  (*this)=m*(*this);
-    simMathReal x=data[0];
-    simMathReal y=data[1];
-    simMathReal z=data[2];
+    simReal x=data[0];
+    simReal y=data[1];
+    simReal z=data[2];
     data[0]=m.axis[0].data[0]*x+m.axis[1].data[0]*y+m.axis[2].data[0]*z;
     data[1]=m.axis[0].data[1]*x+m.axis[1].data[1]*y+m.axis[2].data[1]*z;
     data[2]=m.axis[0].data[2]*x+m.axis[1].data[2]*y+m.axis[2].data[2]*z;
@@ -86,62 +86,62 @@ void C3Vector::operator*= (const C7Vector& transf)
     (*this)=transf*(*this);
 }
 
-void C3Vector::buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,simMathReal t)
+void C3Vector::buildInterpolation(const C3Vector& fromThis,const C3Vector& toThat,simReal t)
 {
     (*this)=fromThis+((toThat-fromThis)*t);
 }
 
-simMathReal* C3Vector::ptr()
+simReal* C3Vector::ptr()
 {
     return(data);
 }
 
-bool C3Vector::isColinear(const C3Vector& v,simMathReal precision) const
+bool C3Vector::isColinear(const C3Vector& v,simReal precision) const
 {
-    simMathReal scalProdSq=(*this)*v;
+    simReal scalProdSq=(*this)*v;
     scalProdSq=scalProdSq*scalProdSq;
-    simMathReal l1=(*this)*(*this);
-    simMathReal l2=v*v;
+    simReal l1=(*this)*(*this);
+    simReal l2=v*v;
     return((scalProdSq/(l1*l2))>=precision);
 }
 
-simMathReal& C3Vector::operator() (size_t i)
+simReal& C3Vector::operator() (size_t i)
 {
     return(data[i]);
 }
 
-const simMathReal& C3Vector::operator() (size_t i) const
+const simReal& C3Vector::operator() (size_t i) const
 {
     return(data[i]);
 }
 
-simMathReal C3Vector::getLength() const
+simReal C3Vector::getLength() const
 {
     return(sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]));
 }
 
-void C3Vector::setData(const floatFloat v[3])
+void C3Vector::setData(const float v[3])
 {
-    data[0]=(simMathReal)v[0];
-    data[1]=(simMathReal)v[1];
-    data[2]=(simMathReal)v[2];
+    data[0]=(simReal)v[0];
+    data[1]=(simReal)v[1];
+    data[2]=(simReal)v[2];
 }
 
 void C3Vector::setData(const double v[3])
 {
-    data[0]=(simMathReal)v[0];
-    data[1]=(simMathReal)v[1];
-    data[2]=(simMathReal)v[2];
+    data[0]=(simReal)v[0];
+    data[1]=(simReal)v[1];
+    data[2]=(simReal)v[2];
 }
 
-void C3Vector::getData(simMathReal v[3]) const
+void C3Vector::getData(simReal v[3]) const
 {
     v[0]=data[0];
     v[1]=data[1];
     v[2]=data[2];
 }
 
-void C3Vector::setData(simMathReal v0,simMathReal v1,simMathReal v2)
+void C3Vector::setData(simReal v0,simReal v1,simReal v2)
 {
     data[0]=v0;
     data[1]=v1;
@@ -151,7 +151,7 @@ void C3Vector::setData(simMathReal v0,simMathReal v1,simMathReal v2)
 C3Vector C3Vector::getNormalized() const
 {
     C3Vector retV;
-    simMathReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
+    simReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
     if (l!=0.0)
     {
         retV(0)=data[0]/l;
@@ -189,7 +189,7 @@ bool C3Vector::isValid() const
 
 void C3Vector::normalize()
 {
-    simMathReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
+    simReal l=sqrt(data[0]*data[0]+data[1]*data[1]+data[2]*data[2]);
     if (l!=0.0)
     {
         data[0]=data[0]/l;
@@ -205,7 +205,7 @@ void C3Vector::clear()
     data[2]=0.0;
 }
 
-C3Vector C3Vector::operator/ (simMathReal d) const
+C3Vector C3Vector::operator/ (simReal d) const
 {
     C3Vector retV;
     retV(0)=data[0]/d;
@@ -214,14 +214,14 @@ C3Vector C3Vector::operator/ (simMathReal d) const
     return(retV);
 }
 
-void C3Vector::operator/= (simMathReal d)
+void C3Vector::operator/= (simReal d)
 {
     data[0]/=d;
     data[1]/=d;
     data[2]/=d;
 }
 
-C3Vector C3Vector::operator* (simMathReal d) const
+C3Vector C3Vector::operator* (simReal d) const
 {
     C3Vector retV;
     retV(0)=data[0]*d;
@@ -230,7 +230,7 @@ C3Vector C3Vector::operator* (simMathReal d) const
     return(retV);
 }
 
-void C3Vector::operator*= (simMathReal d)
+void C3Vector::operator*= (simReal d)
 {
     data[0]*=d;
     data[1]*=d;
@@ -302,7 +302,7 @@ void C3Vector::operator^= (const C3Vector& v)
     data[2]=retV(2);
 }
 
-simMathReal C3Vector::operator* (const C3Vector& v) const
+simReal C3Vector::operator* (const C3Vector& v) const
 { // Scalar product
     return(data[0]*v.data[0]+data[1]*v.data[1]+data[2]*v.data[2]);
 }

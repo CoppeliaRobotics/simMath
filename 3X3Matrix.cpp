@@ -31,16 +31,16 @@ C3X3Matrix::~C3X3Matrix()
 
 }
 
-void C3X3Matrix::setEulerAngles(simMathReal a,simMathReal b,simMathReal g)
+void C3X3Matrix::setEulerAngles(simReal a,simReal b,simReal g)
 { // a,b anf g are in radian!
-    simMathReal A=cos(a);
-    simMathReal B=sin(a);
-    simMathReal C=cos(b);
-    simMathReal D=sin(b);
-    simMathReal E=cos(g);
-    simMathReal F=sin(g);
-    simMathReal AD=A*D;
-    simMathReal BD=B*D;
+    simReal A=cos(a);
+    simReal B=sin(a);
+    simReal C=cos(b);
+    simReal D=sin(b);
+    simReal E=cos(g);
+    simReal F=sin(g);
+    simReal AD=A*D;
+    simReal BD=B*D;
     axis[0](0)=C*E;
     axis[1](0)=-C*F;
     axis[2](0)=D;
@@ -60,7 +60,7 @@ void C3X3Matrix::setEulerAngles(const C3Vector& v)
 C3Vector C3X3Matrix::getEulerAngles() const
 { // Angles are in radians!! // THERE IS ANOTHER SUCH ROUTINE IN C4X4MATRIX
     C3Vector retV;
-    simMathReal m02=axis[2](0);
+    simReal m02=axis[2](0);
     if (m02>1.0)
         m02=1.0;   // Just in case
     if (m02<-1.0)
@@ -69,7 +69,7 @@ C3Vector C3X3Matrix::getEulerAngles() const
     retV(1)=CMath::robustAsin(m02);
     if (m02<0.0)
         m02=-m02;
-    if (m02<simMathReal(0.999995))
+    if (m02<simReal(0.999995))
     {   // No gimbal lock
         retV(0)=atan2(-axis[2](1),axis[2](2));
         retV(2)=atan2(-axis[1](0),axis[0](0));
@@ -85,21 +85,21 @@ C3Vector C3X3Matrix::getEulerAngles() const
 C4Vector C3X3Matrix::getQuaternion() const
 {   
     C4Vector retV;
-    simMathReal trace=axis[0](0)+axis[1](1)+axis[2](2);
+    simReal trace=axis[0](0)+axis[1](1)+axis[2](2);
     if (trace>=0.0)    // trace>0.00000001)
     {
-        simMathReal s=sqrt(trace+1.0)*2.0;
+        simReal s=sqrt(trace+1.0)*2.0;
         retV(1)=(axis[1](2)-axis[2](1))/s;
         retV(2)=(axis[2](0)-axis[0](2))/s;
         retV(3)=(axis[0](1)-axis[1](0))/s;
-        retV(0)=simMathReal(0.25)*s;
+        retV(0)=simReal(0.25)*s;
     }
     else
     {
         if ((axis[0](0)>=axis[1](1))&&(axis[0](0)>=axis[2](2)))
         {
-            simMathReal s=sqrt(1.0+axis[0](0)-axis[1](1)-axis[2](2))*2.0;
-            retV(1)=simMathReal(0.25)*s;
+            simReal s=sqrt(1.0+axis[0](0)-axis[1](1)-axis[2](2))*2.0;
+            retV(1)=simReal(0.25)*s;
             retV(2)=(axis[0](1)+axis[1](0))/s;
             retV(3)=(axis[2](0)+axis[0](2))/s;
             retV(0)=(axis[1](2)-axis[2](1))/s;
@@ -108,18 +108,18 @@ C4Vector C3X3Matrix::getQuaternion() const
         {
             if ((axis[1](1)>=axis[0](0))&&(axis[1](1)>=axis[2](2)))
             {
-                simMathReal s=sqrt(1.0+axis[1](1)-axis[0](0)-axis[2](2))*2.0;
+                simReal s=sqrt(1.0+axis[1](1)-axis[0](0)-axis[2](2))*2.0;
                 retV(1)=(axis[0](1)+axis[1](0))/s;
-                retV(2)=simMathReal(0.25)*s;
+                retV(2)=simReal(0.25)*s;
                 retV(3)=(axis[1](2)+axis[2](1))/s;
                 retV(0)=(axis[2](0)-axis[0](2))/s;
             }
             else
             {
-                simMathReal s=sqrt(1.0+axis[2](2)-axis[0](0)-axis[1](1))*2.0;
+                simReal s=sqrt(1.0+axis[2](2)-axis[0](0)-axis[1](1))*2.0;
                 retV(1)=(axis[2](0)+axis[0](2))/s;
                 retV(2)=(axis[1](2)+axis[2](1))/s;
-                retV(3)=simMathReal(0.25)*s;
+                retV(3)=simReal(0.25)*s;
                 retV(0)=(axis[0](1)-axis[1](0))/s;
             }
         }
@@ -128,17 +128,17 @@ C4Vector C3X3Matrix::getQuaternion() const
     return(retV);
 }
 
-void C3X3Matrix::buildInterpolation(const C3X3Matrix& fromThis,const C3X3Matrix& toThat,simMathReal t)
+void C3X3Matrix::buildInterpolation(const C3X3Matrix& fromThis,const C3X3Matrix& toThat,simReal t)
 {   // Builds the interpolation (based on t) from 'fromThis' to 'toThat'
     C4Vector out;
     out.buildInterpolation(fromThis.getQuaternion(),toThat.getQuaternion(),t);
     (*this)=out;
 }
 
-void C3X3Matrix::buildXRotation(simMathReal angle)
+void C3X3Matrix::buildXRotation(simReal angle)
 {
-    simMathReal c=cos(angle);
-    simMathReal s=sin(angle);
+    simReal c=cos(angle);
+    simReal s=sin(angle);
     axis[0](0)=1.0;
     axis[1](0)=0.0;
     axis[2](0)=0.0;
@@ -150,10 +150,10 @@ void C3X3Matrix::buildXRotation(simMathReal angle)
     axis[2](2)=c;
 }
 
-void C3X3Matrix::buildYRotation(simMathReal angle)
+void C3X3Matrix::buildYRotation(simReal angle)
 {
-    simMathReal c=cos(angle);
-    simMathReal s=sin(angle);
+    simReal c=cos(angle);
+    simReal s=sin(angle);
     axis[0](0)=c;
     axis[1](0)=0.0;
     axis[2](0)=s;
@@ -165,10 +165,10 @@ void C3X3Matrix::buildYRotation(simMathReal angle)
     axis[2](2)=c;
 }
 
-void C3X3Matrix::buildZRotation(simMathReal angle)
+void C3X3Matrix::buildZRotation(simReal angle)
 {
-    simMathReal c=cos(angle);
-    simMathReal s=sin(angle);
+    simReal c=cos(angle);
+    simReal s=sin(angle);
     axis[0](0)=c;
     axis[1](0)=-s;
     axis[2](0)=0.0;
@@ -187,12 +187,12 @@ C3Vector C3X3Matrix::getNormalVector() const
     return((v0^v1).getNormalized());
 }
 
-simMathReal& C3X3Matrix::operator() (size_t i,size_t j)
+simReal& C3X3Matrix::operator() (size_t i,size_t j)
 {
     return(axis[j](i));
 }
 
-const simMathReal& C3X3Matrix::operator() (size_t i,size_t j) const
+const simReal& C3X3Matrix::operator() (size_t i,size_t j) const
 {
     return(axis[j](i));
 }
@@ -228,7 +228,7 @@ void C3X3Matrix::transpose()
     (*this)=getTranspose();
 }
 
-void C3X3Matrix::setData(const simMathReal v[9])
+void C3X3Matrix::setData(const simReal v[9])
 {
     axis[0](0)=v[0];
     axis[1](0)=v[1];
@@ -241,7 +241,7 @@ void C3X3Matrix::setData(const simMathReal v[9])
     axis[2](2)=v[8];
 }
 
-void C3X3Matrix::getData(simMathReal v[9]) const
+void C3X3Matrix::getData(simReal v[9]) const
 {
     v[0]=axis[0](0);
     v[1]=axis[1](0);
@@ -324,7 +324,7 @@ C3X3Matrix C3X3Matrix::operator- (const C3X3Matrix& m) const
     return(retM);
 }
 
-C3X3Matrix C3X3Matrix::operator* (simMathReal f) const
+C3X3Matrix C3X3Matrix::operator* (simReal f) const
 {
     C3X3Matrix retM;
     retM(0,0)=axis[0](0)*f;
@@ -339,7 +339,7 @@ C3X3Matrix C3X3Matrix::operator* (simMathReal f) const
     return(retM);
 }
 
-C3X3Matrix C3X3Matrix::operator/ (simMathReal f) const
+C3X3Matrix C3X3Matrix::operator/ (simReal f) const
 {
     C3X3Matrix retM;
     retM(0,0)=axis[0](0)/f;
@@ -394,7 +394,7 @@ void C3X3Matrix::operator-= (const C3X3Matrix& m)
     axis[2](2)-=m(2,2);
 }
 
-void C3X3Matrix::operator*= (simMathReal f)
+void C3X3Matrix::operator*= (simReal f)
 {
     axis[0](0)*=f;
     axis[1](0)*=f;
@@ -407,7 +407,7 @@ void C3X3Matrix::operator*= (simMathReal f)
     axis[2](2)*=f;
 }
 
-void C3X3Matrix::operator/= (simMathReal f)
+void C3X3Matrix::operator/= (simReal f)
 {
     axis[0](0)/=f;
     axis[1](0)/=f;
