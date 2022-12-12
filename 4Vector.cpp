@@ -116,14 +116,23 @@ C3Vector C4Vector::getAngleAndAxis(simReal& angle) const
     if (cosA>1.0) // Just make sure..
         cosA=1.0;
     angle=CMath::robustAcos(cosA)*2.0;
-    simReal sinA=sqrt(1.0-cosA*cosA);
-    if (fabs(sinA)<simReal(0.00005))
-        sinA=1.0;
+    if (angle>0.000001)
+    {
+        simReal sinA=sqrt(1.0-cosA*cosA);
+        if (fabs(sinA)<simReal(0.00005))
+            sinA=1.0;
+        else
+            sinA*=l; // Quaternion needs to be normalized
+        retV(0)=d(1)/sinA;
+        retV(1)=d(2)/sinA;
+        retV(2)=d(3)/sinA;
+    }
     else
-        sinA*=l; // Quaternion needs to be normalized
-    retV(0)=d(1)/sinA;
-    retV(1)=d(2)/sinA;
-    retV(2)=d(3)/sinA;
+    {
+        retV(0)=0.0;
+        retV(1)=0.0;
+        retV(2)=1.0;
+    }
     return(retV);
 }
 
